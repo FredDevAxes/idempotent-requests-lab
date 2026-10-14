@@ -1,0 +1,222 @@
+{
+  "cases": [
+    {
+      "title": "normal send, exact retry and a distinct intention",
+      "file": "critical.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "real response loss, reload with preserved key/content and recovery",
+      "file": "critical.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "content conflict is visible without a duplicate",
+      "file": "critical.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "pre-commit failure and recovery leave no partial writes",
+      "file": "critical.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "twenty actual browser sends create one record",
+      "file": "critical.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "mobile and keyboard path, reduced motion, contrast and 200% reflow",
+      "file": "critical.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "explicit reset confirmation and purge controls",
+      "file": "critical.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "storage failure prevents sending an unpreserved intention",
+      "file": "critical.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "reload during an in-flight commit preserves the intent and recovers",
+      "file": "critical.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "first-time view explains the next action and keeps identifiers in the technical tab",
+      "file": "guided.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "guided sequential replay explains two sends and one actual saved request",
+      "file": "guided.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "guided lost response, tab switch and reload preserve the same reference and recover",
+      "file": "guided.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "guided concurrency uses twenty real sends and one saved record",
+      "file": "guided.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "guided rollback shows no saved record then a successful retry",
+      "file": "guided.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "guided content conflict preserves the original priority",
+      "file": "guided.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "guided new intention uses two keys and creates two genuine requests",
+      "file": "guided.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "guided results exclude earlier experiments without deleting them",
+      "file": "guided.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "server read failure never presents a fabricated zero or success conclusion",
+      "file": "guided.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "existing v0.1 browser intent remains intact until a new experiment is explicitly started",
+      "file": "guided.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "guided keyboard, accessible tabs, mobile and 200 percent reflow",
+      "file": "guided.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "title": "in-app browser width keeps the guided action and observations readable",
+      "file": "guided.spec.mjs",
+      "ok": true,
+      "results": [
+        {
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "startTime": "2026-10-14T21:50:21.178Z",
+    "duration": 19515.139,
+    "expected": 21,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -1,12 +1,46 @@
 # Verification record
 
-Status: verified local prototype. Local checks, public Ubuntu CI and reproduction
-from a fresh public clone passed. The milestone is `v0.1.0`; the tag is published
-only after its own delivery revision passes CI.
+## Guided interface milestone
 
-Implementation and screenshots examined: `bc7cd25c699170c49faaa9f761eb6fffe0a5eb52`.
+The v0.2.0 interface adds an accompanied, six-experiment presentation and a separate
+technical-controls tab. The API transaction and retention contract are unchanged.
+The existing client session format remains accepted; starting a new experiment is explicit.
+
+Executed browser coverage: 21 Chromium cases passed with no skipped cases, including
+all six guided lessons, exact replay, real lost-response recovery, preserved references
+across reload/tab changes, two distinct intentions, scoped experiment counts, unavailable
+server reads, old-session preservation, keyboard/tabs, axe scans and 200% text reflow.
+The displayed face is a pinned self-hosted font, checked in the rendered heading.
+
+Real screenshots show the compiled interface at 1440×1100, 390×844, 659×853 and 640×800
+with 200% root text. Capture helpers wait for document.fonts.ready. Screenshot provenance
+is embedded. The Impeccable detector ran once and returned no findings; the finish reviewer
+requested truthful conflict wording and a self-hosted typeface. Both corrections are
+scored resolved in the focused verdict, with disposition ship. The final local checks
+and public delivery are recorded below.
+
+The complete local `pnpm check` passed on 14 October 2026: formatting, ESLint,
+API/contracts/web builds, TypeScript, 2 unit tests, 15 real PostgreSQL/HTTP tests
+and 21 compiled Chromium cases. No tests were skipped. See
+[the sanitized check output](evidence/v020-local-check.txt) and
+[the browser-case summary](evidence/v020-browser-cases.json).
+`DESIGN.md` and `.impeccable/design.json` record the implementation's design system.
+The current pinned production dependency audit reported no known advisories.
+The working tree was scanned by Gitleaks with no findings; the committed history is
+checked again before push. Font licenses were verified from the installed inventory.
+
+The actual records stay isolated in the browser-test schema. A failed server read is not
+reported as zero, and a conflict is not described as an accepted replay. No metric or
+successful business write is simulated by the guide.
+
+# v0.1.0 verification history
+
+Historical v0.1.0 milestone. Its immutable tag preserves the original interface,
+test results and screenshots. See the current guided-interface record above.
+
+Historical implementation and original screenshots examined: `bc7cd25c699170c49faaa9f761eb6fffe0a5eb52`.
 The later check-order correction does not change runtime behavior. Screenshot UUIDs
-are fictional generated identifiers. See the [demo protocol](demo.md) for conditions.
+are fictional generated identifiers. See [the original protocol](https://github.com/FredDevAxes/idempotent-requests-lab/blob/v0.1.0/docs/demo.md) for its capture conditions.
 
 Observed on 14 October 2026, macOS arm64, Node 24.13.0, pnpm 10.34.5, Docker 29.8.0,
 PostgreSQL 17.6, Chromium 156.0.8078.4 (Playwright 1.64.1):

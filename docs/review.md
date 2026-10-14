@@ -1,4 +1,27 @@
-# Final code and accessibility review
+# Interface review
+
+## Guided interface review
+
+A fresh Impeccable finish reviewer examined the complete guided interface against the
+confirmed accompanied-use brief and development-only direction contract. It validated
+the six-step topology, separate technical tab, observation comparison, preserved-session
+explanation and the captured desktop/mobile/in-app/200% adaptations.
+
+The initial disposition was **fix** with two material findings:
+
+1. After a content conflict, the footer described a saved request as returned. The
+   footer now distinguishes refusal, rollback, separate intention and accepted replay.
+   Browser assertions verify that the conflict keeps the original priority and does
+   not say a response was returned.
+2. Display headings inherited the system face. Atkinson Hyperlegible Next Variable
+   5.3.0 is now self-hosted through Fontsource; its rendered use and narrow-width reflow
+   are tested, and OFL-1.1 is retained with the public assets.
+
+The focused verdict scored both corrections **resolved**, with disposition **ship**.
+No material regression was observed in that fix batch. This UI finish review is not
+an independent security or complete accessibility audit.
+
+# v0.1.0 review history
 
 Reviewed the API transaction, SQL migration, request normalization, HTTP fault/control
 boundary, client persistence, process recovery, purge and browser-test isolation using

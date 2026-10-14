@@ -1,0 +1,17 @@
+{
+  "scope": "Guided interface finish review; focused verdict on the two material fixes",
+  "disposition": "ship",
+  "fixes": [
+    {
+      "finding": "Conflict described as returned result",
+      "score": "resolved",
+      "evidence": "guided-demo.tsx and guided-conflict-desktop.png distinguish refusal from accepted replay"
+    },
+    {
+      "finding": "Headings inherited the system face",
+      "score": "resolved",
+      "evidence": "Self-hosted Atkinson Hyperlegible Next Variable is active; desktop, mobile, in-app and enlarged-text captures remain readable"
+    }
+  ],
+  "remaining": "No material regression observed in the scored fix batch. This is not an independent security or complete accessibility audit."
+}

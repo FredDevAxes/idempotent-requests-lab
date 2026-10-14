@@ -12,12 +12,32 @@ const attemptSchema = z.object({
   outcome: z.enum(["accepted", "unknown", "retryable", "conflict", "invalid"]),
   message: z.string(),
 });
+export const lessonIds = [
+  "repeat",
+  "lost",
+  "parallel",
+  "rollback",
+  "conflict",
+  "new",
+] as const;
+export type LessonId = (typeof lessonIds)[number];
+const guideSchema = z.object({
+  lesson: z.enum(lessonIds),
+  runSite: z.string(),
+  phase: z.enum(["ready", "retry", "done"]),
+  priorSends: z.number().int().nonnegative(),
+  firstRequestId: z.string().nullable(),
+  firstServerCount: z.number().int().nonnegative().nullable().default(null),
+  keys: z.array(keySchema).max(2),
+});
+export type GuideState = z.infer<typeof guideSchema>;
 const sessionSchema = z.object({
   key: keySchema,
   draft: draftSchema,
   locked: z.boolean(),
   attempts: z.array(attemptSchema).max(100),
   businessId: z.string().nullable(),
+  guide: guideSchema.optional(),
 });
 export type Session = z.infer<typeof sessionSchema>;
 export type Attempt = z.infer<typeof attemptSchema>;

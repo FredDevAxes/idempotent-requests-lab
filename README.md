@@ -9,10 +9,11 @@ This is a **local, limited prototype** using fictional maintenance requests. It
 explores a bounded database guarantee, not universal exactly-once delivery. There
 are no payments, emails, external effects or production deployment.
 
-![Two successful attempts share one identifier and one persisted intervention](docs/evidence/known-desktop.png)
+![Guided demonstration with one next action and separate client and server observations](docs/evidence/guided-ready-desktop.png)
 
-Two attempts, one saved request. The ledger shows actual responses and the list
-below reads PostgreSQL. See the [demo protocol](docs/demo.md) and
+The guided view walks through six experiments, one action at a time. It separates
+what the client knows from what the server actually saved. A second tab contains
+the manual request form, HTTP traces and local fault controls. See the [demo protocol](docs/demo.md) and
 [verification record](docs/verification.md) for the examined revision and limitations.
 
 ## What to observe
@@ -79,14 +80,23 @@ LOCAL_DEMO=true pnpm dev
 Open **http://127.0.0.1:5173**. The API listens on 127.0.0.1:3100. To watch the
 response-loss experiment:
 
-1. Open **Technical demonstration** and choose **Lose the response after commit**.
-2. Send the default fictional request. The result becomes unknown while one record
-   appears in **Saved requests**.
-3. Reload the page. The key and frozen content stay the same.
-4. Select **Normal delivery** and click **Retry same request**. The stored identifier
-   is confirmed and the list still contains one request.
+1. The **Guided demo** starts with **Send twice**. Click **Send the request**.
+   Compare the confirmation on the client with the one saved job on the server.
+2. Click **Send the same request again**. The result reads **2 sends, 1 saved request**.
+3. Click **Next experiment** to explore **Lose a reply**, then **Send with a lost reply**.
+   The client has no confirmation, while the server observation shows the saved job.
+4. Reload if you want to test persistence. This same experiment and its reference return.
+5. Click **Try the same request again**. The API returns the existing record.
 
-After the reload the scenario defaults to Normal delivery. The optional command
+Each experiment creates a unique fictional run reference, so earlier database rows do
+not affect its displayed result. Starting or repeating an experiment keeps earlier
+saved rows. The next action advances only from observed responses and saved evidence;
+unavailable server data is shown as unavailable, never as a fabricated zero.
+
+**Technical controls** exposes the full keys, HTTP attempts, manual form, fault
+selector, retention clock, purge and explicit reset. The manual fault selector
+returns to Normal delivery after a page reload; the guided experiment retains its
+own stage and selects the safe retry automatically. The optional command
 below runs the same HTTP-level experiment against the already running API:
 
 ```sh
@@ -97,7 +107,8 @@ It prints observed identifiers and fails if the lost response did not leave a
 persisted success. It adds one fictional request and keeps its key for the retry.
 The [full protocol](docs/demo.md) also covers rollback, concurrency, conflicts and purge.
 
-Use **New intention** to unlock the form and create another request. **Reset lab data**
+In Technical controls, use **New request** to unlock the form and create another
+request. **Reset lab data**
 requires confirmation and removes only rows in the isolated lab schema. Advancing
 the demo clock does not purge automatically; use **Purge eligible keys** separately.
 
@@ -190,5 +201,6 @@ is not a performance benchmark or production service.
 [MIT](LICENSE), copyright 2026 Frédéric Raimondi, covers the original code in every
 workspace package. All package manifests declare MIT. [Third-party notices](docs/third-party.md)
 list dependency licenses, which retain their own terms. Screenshots come from this
-lab with fictional data; fonts use the host system. No client assets or internal
+lab with fictional data. Atkinson Hyperlegible Next is self-hosted under OFL-1.1;
+its notice is preserved alongside the installed dependency and public font assets. No client assets or internal
 personal-branding notes are included.

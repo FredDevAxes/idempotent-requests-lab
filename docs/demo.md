@@ -4,41 +4,54 @@ Follow README.md setup, then run `LOCAL_DEMO=true pnpm dev`. Use fictional data 
 The two visible areas separate the user's form/ledger from local technical controls.
 Each send reaches the API; the saved-request list comes from PostgreSQL.
 
-## Lost response and recovery
+## Present the guided demonstration
 
-1. Confirm the form shows North workshop, the fictional water pump and Routine inspection.
-2. Open local scenario controls; select Lose the response after commit.
-3. Send. PostgreSQL commits the business request and stored response; the API then
-   destroys its HTTP socket. The proxy may return a 500 without a usable body.
-4. Observe Result unknown and exactly one new saved record. Record the intention key.
-5. Reload. The same key and frozen content are restored; the scenario defaults to Normal delivery.
-6. Retry. The result becomes known with the identifier already present in the database.
-7. Retry again: the status is still 201 and no extra record appears.
+Keep **Guided demo** selected. The lesson strip follows a useful teaching sequence,
+and each scene offers one next action. No manual fault configuration is required.
+The observer stage compares the client's confirmation with actual server records.
 
-The equivalent HTTP experiment is `pnpm demo:cli`. The integration test compares
-replayed JSON with the response stored in the database, not just identifiers.
+| Experiment         | First action              | Next action                 | Verified outcome                                       |
+| ------------------ | ------------------------- | --------------------------- | ------------------------------------------------------ |
+| Send twice         | Send the request          | Send the same request again | 2 sends, 1 saved request, same identifier              |
+| Lose a reply       | Send with a lost reply    | Try the same request again  | Real post-commit response loss, then recovery          |
+| Send together      | Send 20 attempts together | Review the result           | 20 actual calls, 1 saved request                       |
+| Fail before saving | Try a send that fails     | Retry without the failure   | Zero rows after rollback, then one successful creation |
+| Change the content | Save the routine request  | Try changing it to urgent   | 409 refusal; the original remains routine              |
+| Create another     | Save the first request    | Create a separate request   | 2 keys, 2 records, identical business content          |
 
-![Unknown result after socket destruction with one saved database record](evidence/unknown-desktop.png)
+Every new experiment gets a unique fictional site reference. Only rows matching that
+reference appear in the guided server observation; previous rows are kept and remain
+visible under Technical controls. Counts and conclusions come from actual API/HTTP
+activity. If the server cannot be read, the interface says so rather than displaying
+zero or claiming success. Refresh the server evidence or inspect it before continuing.
 
-Actual browser capture: the response is missing, while the record below proves commit.
+![A lost confirmation beside a real saved request, with one safe retry action](evidence/guided-lost-desktop.png)
 
-## Other scenarios
+Actual compiled-browser capture after the API socket was destroyed following commit.
 
-Use New intention before a scenario that requires a new key. This keeps the same default
-content, creates a different key and unlocks the form.
+## Reload, repeat and inspect
 
-| Scenario           | Procedure                                               | Observed effect                                                 |
-| ------------------ | ------------------------------------------------------- | --------------------------------------------------------------- |
-| Rollback           | New intention; Fail before commit; send                 | 503 and no new row; Normal delivery + retry creates one         |
-| Concurrency        | New intention; Send 20 simultaneous attempts            | 20 ledger entries and one saved request                         |
-| Conflict           | Send normally; Change content under the same key; retry | Demo flips priority, producing 409 and no duplicate             |
-| Distinct intention | New intention; normal send with identical content       | A second record with a new identifier                           |
-| Retention          | Purge before advancing clock                            | Zero newly eligible keys purged                                 |
-| Purge boundary     | Advance 25 hours; purge; retry an old key               | Business rows remain; the purged key can create another request |
-| Reset              | Reset lab data; confirm                                 | Only the lab schema's business/key rows are cleared             |
+Reload after the unknown result. The selected experiment, request key, content and
+retry stage are restored. Press Try the same request again to confirm the saved job.
+The equivalent HTTP experiment is `pnpm demo:cli`; it adds one fictional request.
 
-The controlled demo clock is process-local; restarting restores real wall time. Reset
-clears rows, not the clock. Restart the API if you want a fresh clock.
+Use **Inspect the evidence** to open the Technical controls tab. The current key,
+business identifier and HTTP attempts are preserved when switching between tabs.
+**Repeat this experiment** starts another explicit experiment without deleting rows.
+An existing v0.1 browser session stays intact until a new experiment is started.
+
+## Technical controls
+
+The second tab retains the full manual form and every local control. Use **New request**
+to create a new reference and unlock the content. To reproduce a manual conflict,
+send normally, select Change content under the same key, then retry. The demo flips
+priority rather than appending text beyond the input limit.
+
+Purge and advancing time are separate controls. Advance clock by 25 hours, then Purge
+eligible keys. Business records remain, but retrying a purged key may create again.
+Reset lab data requires confirmation and deletes only rows in the isolated lab schema.
+The controlled clock is process-local and survives a row reset, but not an API restart.
+Normal and production mode hide/disable all fault controls at the API boundary.
 
 ## Automated evidence and visual conditions
 
@@ -49,7 +62,7 @@ waiting in pg_stat_activity before its 503 is checked. No fixed sleep alone esta
 the order of these fault tests.
 
 Captures are from the real compiled app in Chromium: 1440×1100 desktop, 390×844 mobile,
-and 640×800 with 200% root text size for reflow. They use isolated test data. UUIDs and
+659×853 (the observed in-app browser), and 640×800 with 200% root text size for reflow. They use isolated test data. UUIDs and
 times naturally differ across runs. See [verification.md](verification.md) for their
 code revision and the recorded results. To regenerate after a code change:
 
@@ -58,11 +71,11 @@ pnpm build
 CAPTURE_DOCS=true pnpm test:browser
 ```
 
-![Mobile form and attempt ledger stack in task order without horizontal overflow](evidence/known-mobile.png)
+![Mobile guided result and client/server observations stack without horizontal overflow](evidence/guided-mobile.png)
 
 Mobile capture after a keyboard-only send. The scan includes labels, contrast and landmarks.
 
-![Enlarged text and wrapped identifiers remain usable in the narrow reflow check](evidence/zoom-reflow.png)
+![Enlarged guided text and observations remain usable in the narrow reflow check](evidence/guided-zoom.png)
 
 200% text/reflow check. This is an automated layout surrogate; native browser zoom
 and assistive-technology combinations can behave differently.

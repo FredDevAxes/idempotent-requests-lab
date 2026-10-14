@@ -11,14 +11,20 @@ async function counts(requests, keys) {
   );
   expect(result.rows[0]).toEqual({ requests, keys });
 }
+async function openTechnical(page) {
+  await page
+    .getByRole("tab", { name: "Technical controls", exact: true })
+    .click();
+}
 async function scenario(page, label) {
-  if (!(await page.getByLabel("Scenario for the next attempt").isVisible()))
-    await page.getByText("Open local scenario controls").click();
   await page
     .getByLabel("Scenario for the next attempt")
     .selectOption({ label });
 }
 async function screenshot(page, name) {
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+  });
   await mkdir("test-results/screenshots", { recursive: true });
   await page.screenshot({
     path: `test-results/screenshots/${name}.png`,
@@ -41,7 +47,8 @@ test.beforeEach(async ({ request, page }) => {
     ).status(),
   ).toBe(201);
   await page.goto("/");
-  await expect(page.getByText("Open local scenario controls")).toBeVisible();
+  await openTechnical(page);
+  await expect(page.getByLabel("Site", { exact: true })).toBeVisible();
 });
 test.afterAll(async () => pool.end());
 test("normal send, exact retry and a distinct intention", async ({ page }) => {
@@ -53,9 +60,7 @@ test("normal send, exact retry and a distinct intention", async ({ page }) => {
   await expect(page.getByTestId("business-id")).toHaveText(id);
   await counts(1, 1);
   await screenshot(page, "known-desktop");
-  await page
-    .getByRole("button", { name: "New intention", exact: true })
-    .click();
+  await page.getByRole("button", { name: "New request", exact: true }).click();
   await page.getByRole("button", { name: "Send request", exact: true }).click();
   await expect(page.getByTestId("saved-requests").locator("li")).toHaveCount(2);
   await counts(2, 2);
@@ -76,6 +81,7 @@ test("real response loss, reload with preserved key/content and recovery", async
     .rows[0].response;
   await screenshot(page, "unknown-desktop");
   await page.reload();
+  await openTechnical(page);
   await expect(page.getByTestId("intention-key")).toHaveText(key);
   await expect(page.getByLabel("What needs attention?")).toHaveValue(input);
   await expect(page.getByLabel("What needs attention?")).toBeDisabled();
@@ -125,9 +131,11 @@ test("mobile and keyboard path, reduced motion, contrast and 200% reflow", async
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.reload();
-  await page.keyboard.press("Tab");
+  await openTechnical(page);
+  await page.keyboard.press("Shift+Tab");
+  await page.keyboard.press("Shift+Tab");
   await expect(
-    page.getByRole("link", { name: "Skip to request form" }),
+    page.getByRole("link", { name: "Skip to the next action" }),
   ).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(page.getByLabel("Site", { exact: true })).toBeFocused();
@@ -171,20 +179,24 @@ test("explicit reset confirmation and purge controls", async ({ page }) => {
   await expect(page.getByRole("status").first()).toContainText("Result known.");
   await scenario(page, "Normal delivery");
   await page.getByRole("button", { name: "Purge eligible keys" }).click();
-  await expect(page.getByRole("status").last()).toContainText(
+  await expect(page.getByTestId("control-status")).toContainText(
     "0 retained keys",
   );
   await counts(1, 1);
   await page.getByRole("button", { name: "Advance clock by 25 hours" }).click();
-  await expect(page.getByRole("status").last()).toContainText("clock advanced");
+  await expect(page.getByTestId("control-status")).toContainText(
+    "clock advanced",
+  );
   await page.getByRole("button", { name: "Purge eligible keys" }).click();
-  await expect(page.getByRole("status").last()).toContainText(
+  await expect(page.getByTestId("control-status")).toContainText(
     "1 retained keys",
   );
   await counts(1, 0);
   page.once("dialog", (dialog) => dialog.accept());
   await page.getByRole("button", { name: "Reset lab data" }).click();
-  await expect(page.getByRole("status").last()).toContainText("Lab data reset");
+  await expect(page.getByTestId("control-status")).toContainText(
+    "Lab data reset",
+  );
   await counts(0, 0);
 });
 
@@ -223,6 +235,7 @@ test("reload during an in-flight commit preserves the intent and recovers", asyn
     .toBe(true);
   await counts(0, 0);
   await page.reload();
+  await openTechnical(page);
   await expect(page.getByTestId("intention-key")).toHaveText(key);
   await expect(page.getByRole("status").first()).toContainText(
     "No result confirmed",

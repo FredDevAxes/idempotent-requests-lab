@@ -47,16 +47,27 @@ from keeping a transaction open indefinitely. Tests verify visibility from a sep
 connection before release, and use pg_stat_activity to observe a waiting contender.
 The lost-response hook destroys the real HTTP socket after commit, not a UI message.
 
-## Design direction
+## Guided interface
 
-The interface is a maintenance dispatch worksheet: cool white (#f5f8fc), deep marine
-(#173352), slate (#40556b), signal blue (#165bb6), confirmation green (#176144) and
-error red (#a52b37). A Georgia headline suggests a service log; the system sans-serif
-keeps form controls readable without downloading fonts. Left-aligned form and attempt
-ledger share a wide workspace; persisted records span the page below. Narrow screens
-stack these in task order. The meaningful visual device is the attempt timeline, whose
-numbers correspond to actual sends. Technical controls sit in a separate details panel.
-No decorative metric cards, gradients, stock assets or automatic motion are needed.
+The frontend separates a guided presentation from technical controls. PRODUCT.md
+records the confirmed accompanied-use scenario. DESIGN.md describes the shipped
+visual system; the development-only direction contract is never imported by the app.
+
+The guide keeps a lesson, request reference, phase, initial saved-record observation
+and first request identifier with the existing client session. Its primary action
+sends real HTTP requests and its server panel reads PostgreSQL through the API.
+A unique fictional site reference scopes observations to one experiment while keeping
+older records. Conclusions check the expected outcome, row count and relevant identity;
+a failed read never becomes zero. Two keys represent a separate-request exercise.
+
+The original session format remains valid because guide metadata is optional. Starting
+a new experiment is explicit; the initial render does not erase an earlier key or draft.
+The technical tab retains manual inputs, faults, traces, retention and confirmed reset.
+Tab and lesson changes do not cancel or replace an in-flight request.
+
+Atkinson Hyperlegible Next is served locally from a pinned Fontsource package under
+OFL-1.1. The comparison stage uses runtime geometry and authored icon-size SVG paths;
+no generated or client-sourced raster asset is included in the interface.
 
 ## Sources and versions examined
 
@@ -75,3 +86,5 @@ and Vite 7 rather than changing major versions during implementation.
 Authentication and tenant-bound keys would be needed for a shared service. External
 effects would require additional design (for example a transactional outbox); this
 transaction alone does not protect them. No performance benchmark is claimed.
+
+- [Atkinson Hyperlegible Next / Fontsource](https://fontsource.org/fonts/atkinson-hyperlegible-next)
