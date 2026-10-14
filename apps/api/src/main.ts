@@ -4,7 +4,7 @@ const pool = createPool();
 async function main() {
   const app = await createApp(pool);
   await app.listen(Number(process.env.API_PORT ?? 3100), "127.0.0.1");
-  console.log("API ready");
+  console.log(`API ready ${await app.getUrl()}`);
   for (const signal of ["SIGINT", "SIGTERM"] as const)
     process.on(signal, () => {
       void app
