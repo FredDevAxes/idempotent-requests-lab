@@ -33,6 +33,27 @@ The actual records stay isolated in the browser-test schema. A failed server rea
 reported as zero, and a conflict is not described as an accepted replay. No metric or
 successful business write is simulated by the guide.
 
+### Public delivery and fresh-clone reproduction
+
+The [guided-interface CI run](https://github.com/FredDevAxes/idempotent-requests-lab/actions/runs/38643683964)
+passed on `0d2d0ba7a41257d9f657b3f3002f63dcf515c407`, the complete interface revision.
+A new anonymous HTTPS clone of that exact revision installed dependencies with the
+frozen lockfile, copied the example environment, built, migrated, installed Chromium
+and passed `pnpm check` (2 unit, 15 PostgreSQL/HTTP, 21 browser tests; none skipped).
+The existing local PostgreSQL container, installed toolchain and package/browser
+caches were reused. No configuration, node_modules or build output was copied into
+the clone. Git remained clean. See [clean-clone output](evidence/v020-clean-check.txt).
+The running visitor demonstration was kept separate from these test schemas.
+
+The evidence-record commit changes documentation only. The final `v0.2.0` delivery
+must also have a successful main-branch CI run before its tag is pushed. Resolve the
+annotated tag with `git rev-list -n 1 v0.2.0` and match that SHA in
+[main-branch runs](https://github.com/FredDevAxes/idempotent-requests-lab/actions?query=branch%3Amain).
+The original `v0.1.0` tag is unchanged. The repository remains public; no service was
+deployed. Chromium is the automated target; native browser zoom, other engines and
+screen readers remain unverified. This is a local prototype with a bounded retention
+contract, not a production or universal exactly-once guarantee.
+
 # v0.1.0 verification history
 
 Historical v0.1.0 milestone. Its immutable tag preserves the original interface,
