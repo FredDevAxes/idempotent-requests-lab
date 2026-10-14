@@ -1,0 +1,19 @@
+name: idempotent-requests-lab
+services:
+  postgres:
+    image: postgres:17.6
+    environment:
+      POSTGRES_USER: lab
+      POSTGRES_DB: idempotency_lab
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "127.0.0.1:55432:5432"
+    volumes:
+      - lab-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lab -d idempotency_lab"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+volumes:
+  lab-data:
