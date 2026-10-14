@@ -1,0 +1,128 @@
+
+> idempotent-requests-lab@0.1.0 check <repository>
+> pnpm format:check && pnpm lint && pnpm build && pnpm typecheck && pnpm test
+
+
+> idempotent-requests-lab@0.1.0 format:check <repository>
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
+
+> idempotent-requests-lab@0.1.0 lint <repository>
+> eslint .
+
+
+> idempotent-requests-lab@0.1.0 build <repository>
+> pnpm -r build
+
+Scope: 3 of 4 workspace projects
+packages/contracts build$ tsc -p tsconfig.json
+packages/contracts build: Done
+apps/web build$ tsc --noEmit && vite build
+apps/api build$ tsc -p tsconfig.json
+apps/api build: Done
+apps/web build: vite v7.3.7 building client environment for production...
+apps/web build: transforming...
+apps/web build: ../../node_modules/.pnpm/zod@4.6.7/node_modules/zod/v4/core/util.js (400:0): A comment
+apps/web build: "// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+apps/web build: in "../../node_modules/.pnpm/zod@4.6.7/node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+apps/web build: ../../node_modules/.pnpm/zod@4.6.7/node_modules/zod/v4/core/regexes.js (74:0): A comment
+apps/web build: "/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+apps/web build:  * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+apps/web build:  * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+apps/web build: in "../../node_modules/.pnpm/zod@4.6.7/node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+apps/web build: ✓ 125 modules transformed.
+apps/web build: rendering chunks...
+apps/web build: computing gzip size...
+apps/web build: dist/index.html                   0.43 kB │ gzip:  0.29 kB
+apps/web build: dist/assets/index-DoRrkEyI.css    4.14 kB │ gzip:  1.52 kB
+apps/web build: dist/assets/index-CSrDmBIg.js   320.18 kB │ gzip: 98.04 kB
+apps/web build: ✓ built in 927ms
+apps/web build: Done
+
+> idempotent-requests-lab@0.1.0 typecheck <repository>
+> pnpm -r typecheck
+
+Scope: 3 of 4 workspace projects
+packages/contracts typecheck$ tsc --noEmit -p tsconfig.json
+packages/contracts typecheck: Done
+apps/api typecheck$ tsc --noEmit -p tsconfig.json
+apps/web typecheck$ tsc --noEmit
+apps/api typecheck: Done
+apps/web typecheck: Done
+
+> idempotent-requests-lab@0.1.0 test <repository>
+> pnpm test:unit && pnpm test:integration && pnpm test:browser
+
+
+> idempotent-requests-lab@0.1.0 test:unit <repository>
+> node --test tests/unit.cjs
+
+✔ canonical inputs collapse whitespace and normalize Unicode (2.22175ms)
+✔ invalid payloads and keys are rejected (0.484958ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 117.098125
+
+> idempotent-requests-lab@0.1.0 test:integration <repository>
+> node --test --test-concurrency=1 tests/integration.cjs
+
+✔ health verifies PostgreSQL, normal creation and exact sequential replay (237.185875ms)
+✔ 2 concurrent sends across two API instances and PostgreSQL connections create one row (17.146417ms)
+✔ 20 concurrent sends across two API instances and PostgreSQL connections create one row (50.400708ms)
+✔ sequential content conflict rejects without a duplicate (15.78375ms)
+✔ concurrent different content accepts exactly one winner (13.668417ms)
+✔ identical data with distinct keys represents two intentions (12.255083ms)
+✔ missing/invalid key or payload creates nothing (9.622042ms)
+✔ pre-commit barrier hides both writes; injected failure rolls back and permits retry (29.102833ms)
+✔ commit then destroyed HTTP socket leaves durable success for retry (20.045958ms)
+✔ retention before 24h, explicit purge after 24h and key reuse (35.222709ms)
+✔ observed lock wait expires with a retryable response then recovers (789.6645ms)
+✔ default mode rejects every fault header and hides all demo controls (15.279542ms)
+✔ reset requires an explicit confirmation and invalid controls write nothing (10.068333ms)
+✔ API process restart recovers the committed response (694.141333ms)
+✔ production disables demo even with explicit local opt-in (339.036791ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2668.748666
+
+> idempotent-requests-lab@0.1.0 test:browser <repository>
+> playwright test
+
+[WebServer] (node:40829) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:40830) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 9 tests using 1 worker
+
+(node:40838) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/browser/critical.spec.mjs:47:1 › normal send, exact retry and a distinct intention (875ms)
+[WebServer] 8:11:19 PM [vite] http proxy error: /interventions
+[WebServer] Error: socket hang up
+[WebServer]     at Socket.socketOnEnd (node:_http_client:599:25)
+[WebServer]     at Socket.emit (node:events:520:35)
+[WebServer]     at endReadableNT (node:internal/streams/readable:1701:12)
+[WebServer]     at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+  ✓  2 tests/browser/critical.spec.mjs:63:1 › real response loss, reload with preserved key/content and recovery (570ms)
+  ✓  3 tests/browser/critical.spec.mjs:86:1 › content conflict is visible without a duplicate (396ms)
+  ✓  4 tests/browser/critical.spec.mjs:98:1 › pre-commit failure and recovery leave no partial writes (378ms)
+  ✓  5 tests/browser/critical.spec.mjs:112:1 › twenty actual browser sends create one record (343ms)
+  ✓  6 tests/browser/critical.spec.mjs:122:1 › mobile and keyboard path, reduced motion, contrast and 200% reflow (886ms)
+  ✓  7 tests/browser/critical.spec.mjs:169:1 › explicit reset confirmation and purge controls (588ms)
+  ✓  8 tests/browser/critical.spec.mjs:191:1 › storage failure prevents sending an unpreserved intention (204ms)
+  ✓  9 tests/browser/critical.spec.mjs:206:1 › reload during an in-flight commit preserves the intent and recovers (446ms)
+
+  9 passed (6.5s)

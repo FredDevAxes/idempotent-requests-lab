@@ -19,7 +19,7 @@
     "test:integration": "node --test --test-concurrency=1 tests/integration.cjs",
     "test:browser": "playwright test",
     "test": "pnpm test:unit && pnpm test:integration && pnpm test:browser",
-    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm build && pnpm test",
+    "check": "pnpm format:check && pnpm lint && pnpm build && pnpm typecheck && pnpm test",
     "demo:cli": "node scripts/demo.mjs"
   },
   "devDependencies": {

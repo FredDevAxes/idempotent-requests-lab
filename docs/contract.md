@@ -2,7 +2,7 @@
 
 A fictional intervention consists of `site`, `description` and `priority` (`routine`
 or `urgent`). Strings are Unicode NFC, trimmed and whitespace-collapsed. Unknown
-fields are rejected. Site length is 2–80, description 5–500 after normalization;
+fields are rejected. Site length is 2–80, description 5–500 after normalization (UTF-16 code units);
 raw inputs are bounded to four times these lengths. JSON property order is irrelevant.
 A SHA-256 hash of an explicitly ordered normalized JSON object is compared.
 

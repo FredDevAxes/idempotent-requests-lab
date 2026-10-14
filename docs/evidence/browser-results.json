@@ -1,0 +1,102 @@
+{
+  "stats": {
+    "startTime": "2026-10-14T18:11:16.986Z",
+    "duration": 6540.603,
+    "expected": 9,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "title": "normal send, exact retry and a distinct intention",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 875
+        }
+      ]
+    },
+    {
+      "title": "real response loss, reload with preserved key/content and recovery",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 570
+        }
+      ]
+    },
+    {
+      "title": "content conflict is visible without a duplicate",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 396
+        }
+      ]
+    },
+    {
+      "title": "pre-commit failure and recovery leave no partial writes",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 378
+        }
+      ]
+    },
+    {
+      "title": "twenty actual browser sends create one record",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 343
+        }
+      ]
+    },
+    {
+      "title": "mobile and keyboard path, reduced motion, contrast and 200% reflow",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 886
+        }
+      ]
+    },
+    {
+      "title": "explicit reset confirmation and purge controls",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 588
+        }
+      ]
+    },
+    {
+      "title": "storage failure prevents sending an unpreserved intention",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 204
+        }
+      ]
+    },
+    {
+      "title": "reload during an in-flight commit preserves the intent and recovers",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 446
+        }
+      ]
+    }
+  ]
+}
