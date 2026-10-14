@@ -116,13 +116,11 @@ export async function createApp(
     ) {
       const response = host.switchToHttp().getResponse<Response>();
       response.setHeader("Retry-After", "1");
-      response
-        .status(503)
-        .json({
-          statusCode: 503,
-          message: exception.message,
-          error: "Service Unavailable",
-        });
+      response.status(503).json({
+        statusCode: 503,
+        message: exception.message,
+        error: "Service Unavailable",
+      });
     }
   }
   app.useGlobalFilters(new RetryableFilter());
