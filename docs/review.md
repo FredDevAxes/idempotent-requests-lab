@@ -1,6 +1,23 @@
 # Interface review
 
-## Guided interface review
+## Current scenario workspace — v0.3.1
+
+The current interface has one page per scenario and a bottom technical panel, collapsed
+by default. The introduction stays beneath the title. Only the scenario navigation
+changes cases; the final action restarts the same case. Exchange motion is tied to
+actual POST sends and outcomes, with independent GET evidence for saved records.
+
+The [visual tour](visual-tour.md) documents this interface. Desktop and mobile captures
+show actual completed outcomes, unknown replies, rollback and the integrated technical
+panel. Existing browser checks cover all six cases, keyboard, axe, 200% text reflow,
+manual navigation, preserved data, reduced motion and exchange lifecycle. See
+[verification.md](verification.md) for execution records and the source revision.
+
+The earlier C design review and its mechanically open responsive comparison gate are
+historical records. Updated documentation does not claim a new independent audit,
+pixel-exact approval or complete accessibility certification.
+
+## Guided interface review — historical v0.2.0
 
 A fresh Impeccable finish reviewer examined the complete guided interface against the
 confirmed accompanied-use brief and development-only direction contract. It validated
@@ -21,7 +38,7 @@ The focused verdict scored both corrections **resolved**, with disposition **shi
 No material regression was observed in that fix batch. This UI finish review is not
 an independent security or complete accessibility audit.
 
-# v0.1.0 review history
+## API review — historical v0.1.0
 
 Reviewed the API transaction, SQL migration, request normalization, HTTP fault/control
 boundary, client persistence, process recovery, purge and browser-test isolation using

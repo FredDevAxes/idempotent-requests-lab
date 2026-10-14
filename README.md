@@ -9,13 +9,22 @@ This is a **local, limited prototype** using fictional maintenance requests. It
 explores a bounded database guarantee, not universal exactly-once delivery. There
 are no payments, emails, external effects or production deployment.
 
-![Scenario workspace with one next action and a collapsed technical panel](docs/evidence/v031-collapsed.png)
+![A lost reply leaves the screen unconfirmed while the server has saved one request; the technical panel is collapsed](docs/visuals/lost-reply.png)
+
+An idempotency key is the request reference the app keeps between attempts.
+Sending the same reference and content again recovers the recorded result.
 
 The guided view walks through six experiments, one action at a time. It separates
 what the client knows from what the server actually saved. Each scenario has one page,
 with a technical panel at the bottom, collapsed by default. Open it for HTTP attempts,
-observed records, identifiers and advanced manual controls. See the [demo protocol](docs/demo.md) and
-[verification record](docs/verification.md) for the examined revision and limitations.
+observed records, identifiers and advanced manual controls. Change scenarios only in
+the navigation; **Restart scenario** starts another run of the current case.
+
+[Explore the six scenarios in pictures](docs/visual-tour.md), including a real request/reply
+recording and the technical panel on mobile. Captures come from [v0.3.1](https://github.com/FredDevAxes/idempotent-requests-lab/tree/v0.3.1);
+the [manifest](docs/visuals/manifest.json) links each image to its code and observations.
+See the [demo protocol](docs/demo.md) for presenter steps and the
+[verification record](docs/verification.md) for executed checks and limitations.
 
 ## What to observe
 
@@ -81,7 +90,7 @@ LOCAL_DEMO=true pnpm dev
 Open **http://127.0.0.1:5173**. The API listens on 127.0.0.1:3100. To watch the
 response-loss experiment:
 
-1. The page starts with **Send twice**. Click **Send the request**.
+1. Select **Send twice** in the scenario navigation. Click **Send the request**.
    Compare the confirmation on the client with the one saved job on the server.
 2. Click **Send the same request again**. The result reads **2 sends, 1 saved request**.
 3. Select **Lost reply** in the scenario navigation, then click **Send with a lost reply**.
@@ -91,7 +100,7 @@ response-loss experiment:
 
 Each experiment creates a unique fictional run reference, so earlier database rows do
 not affect its displayed result. Starting or repeating an experiment keeps earlier
-saved rows. The next action advances only from observed responses and saved evidence;
+saved rows. The next action within a scenario advances only from observed responses and saved evidence;
 unavailable server data is shown as unavailable, never as a fabricated zero.
 
 **Technical details** expands beneath the scenario. It shows full keys, actual HTTP
@@ -165,19 +174,32 @@ annotations may produce harmless build warnings. Neither warning means a test wa
 Test traces and reports are written under ignored `test-results/`.
 
 The [GitHub workflow](.github/workflows/check.yml) runs these same checks on every
-PR and main push, with real PostgreSQL and Chromium. See the verification record
-for runs actually observed; workflow configuration alone is not evidence of a pass.
+PR and main push, with real PostgreSQL and Chromium. It also runs `pnpm docs:capture`
+to verify the current visual-generation path. The verified v0.3.1 runtime milestone
+passed 49 regression cases: 2 unit, 15 PostgreSQL/HTTP and 32 Chromium cases.
+See the [verification record](docs/verification.md) for runs actually observed;
+workflow configuration alone is not evidence of a pass.
+
+## Refresh the documentation visuals
+
+```sh
+pnpm docs:capture
+```
+
+This builds the current app and captures all six scenarios against an isolated API
+and PostgreSQL schema. It preserves the running demo's data. The [visual tour](docs/visual-tour.md#reproduce-these-visuals)
+explains the manifest, ports, optional GIF recording and historical evidence.
 
 ## Repository map
 
-| Path                 | Responsibility                                                            |
-| -------------------- | ------------------------------------------------------------------------- |
-| `apps/api`           | NestJS routes, explicit SQL transaction, demo hooks and migrations        |
-| `apps/web`           | React form, saved client intention, attempt ledger and database list      |
-| `packages/contracts` | Shared validation and types; CommonJS for API, TypeScript source for Vite |
-| `tests`              | Unit, real PostgreSQL/HTTP and Chromium suites                            |
-| `scripts`            | Local launch, isolated browser server and command-line demonstration      |
-| `docs`               | Contract, architecture, risk matrix, review and observed evidence         |
+| Path                 | Responsibility                                                                          |
+| -------------------- | --------------------------------------------------------------------------------------- |
+| `apps/api`           | NestJS routes, explicit SQL transaction, demo hooks and migrations                      |
+| `apps/web`           | Scenario workspace, saved client intention, request/reply motion and technical evidence |
+| `packages/contracts` | Shared validation and types; CommonJS for API, TypeScript source for Vite               |
+| `tests`              | Unit, real PostgreSQL/HTTP and Chromium suites                                          |
+| `scripts`            | Local launch, isolated browser/capture server, visual capture and CLI demonstration     |
+| `docs`               | Visual tour, demo protocol, contract, risk matrix, review and observed evidence         |
 
 pnpm workspaces coordinate these linked apps; an additional orchestrator would add
 little at this size. Root commands are the supported reproduction path. App-specific

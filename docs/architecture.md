@@ -65,8 +65,17 @@ a new experiment is explicit; the initial render does not erase an earlier key o
 The technical panel starts collapsed, closes on scenario navigation, and scopes its
 primary evidence to the active scenario. Its Advanced tools disclosure retains manual
 inputs, faults, HTTP attempts, retention and confirmed reset. Scenario selection uses
-URL fragments. Browsing scenarios preserves the current intention until another
+URL fragments and changes only through the navigation. Completion offers an in-place
+restart of the same scenario; it does not advance to another scenario. Browsing
+scenarios preserves the current intention until another
 experiment is explicitly started; navigation controls are disabled during a send.
+
+Transient exchange state is kept outside the persisted intention. Real POST sends
+trigger a finite outbound animation, and the observed POST outcome enables the return
+path. The client can show confirmation while the independent GET evidence is still
+pending. Control requests and GET refreshes do not animate a fictional send. Navigating
+back or reloading does not replay an earlier exchange; reduced-motion preference
+preserves static labels and counters. Dots illustrate the exchange, not measured latency.
 
 Atkinson Hyperlegible Next is served locally from a pinned Fontsource package under
 OFL-1.1. The comparison stage uses runtime geometry and authored icon-size SVG paths;

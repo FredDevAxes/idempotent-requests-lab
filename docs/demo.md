@@ -27,7 +27,7 @@ visible under **Technical details → Advanced tools → All saved requests**. C
 activity. If the server cannot be read, the interface says so rather than displaying
 zero or claiming success. Refresh the server evidence or inspect it before continuing.
 
-![A lost confirmation beside a real saved request, with one safe retry action](evidence/v031-expanded.png)
+![A lost confirmation beside a real saved request, with one safe retry action](visuals/lost-reply.png)
 
 Actual compiled-browser capture after the API socket was destroyed following commit.
 
@@ -86,21 +86,38 @@ separate connection verifies that neither row is visible. A contender is observe
 waiting in pg_stat_activity before its 503 is checked. No fixed sleep alone establishes
 the order of these fault tests.
 
-Captures are from the real compiled app in Chromium: 1440×1024 and 1440×1100 desktop, 390×844 mobile,
-659×853 (the observed in-app browser), and 640×800 with 200% root text size for reflow. The C comparison is also captured at the approved 1536×1024 dimensions. They use isolated test data. UUIDs and
-times naturally differ across runs. See [verification.md](verification.md) for their
-code revision and the recorded results. To regenerate after a code change:
+The current [visual tour](visual-tour.md) shows all six scenarios, the collapsed and
+expanded technical panel, narrow-screen views and a real request/reply recording.
+The [manifest](visuals/manifest.json) records each image's source revision, browser,
+viewport and actual observations. The current captures use 1440×900 desktop and
+390×844 mobile viewports; all data is fictional and isolated from the running demo.
+
+Regenerate the current visual tour with:
+
+```sh
+pnpm docs:capture
+```
+
+With FFmpeg available, include the optional recording with:
+
+```sh
+CAPTURE_GIF=true pnpm docs:capture
+```
+
+Both commands build first. They reserve ports 3101 and 5174, check actual persisted
+outcomes, and drop their dedicated schema on shutdown. Do not run them alongside
+browser tests. See the [capture instructions](visual-tour.md#reproduce-these-visuals)
+for output and provenance details.
+
+Earlier verification captures under `docs/evidence/` document the immutable v0.1.0,
+v0.2.0, v0.3.0 and v0.3.1 milestones, including the 659px in-app view and the 640px
+200% root-text reflow check. Their original results remain in [verification.md](verification.md).
+To reproduce browser checks and write their corresponding scenario screenshots:
 
 ```sh
 pnpm build
 CAPTURE_DOCS=true pnpm test:browser
 ```
 
-![Mobile guided result and client/server observations stack without horizontal overflow](evidence/v031-mobile.png)
-
-Mobile capture of the expanded technical panel after a real lost response. The scan includes labels, contrast and landmarks.
-
-![Enlarged guided text and observations remain usable in the narrow reflow check](evidence/v031-zoom.png)
-
-200% text/reflow check. This is an automated layout surrogate; native browser zoom
-and assistive-technology combinations can behave differently.
+Those test outputs are separate from the curated visual tour. Native browser zoom
+and full assistive-technology combinations remain outside the verified scope.

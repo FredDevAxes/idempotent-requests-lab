@@ -1,0 +1,195 @@
+{
+  "sourceRevision": "ea9baf468b5576671140de68a2e860dcc50f3631",
+  "sourceTag": "v0.3.1",
+  "browser": "Chromium 156.0.8078.4",
+  "database": "PostgreSQL 17.6 in an isolated browser schema",
+  "reducedMotion": "Static PNGs disable decorative packets; optional recording retains normal motion.",
+  "captures": [
+    {
+      "file": "overview.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scenario": "repeat",
+      "sends": 0,
+      "savedRequests": 0,
+      "outcomes": [],
+      "technicalPanel": false,
+      "capturedAt": "2026-10-14T23:33:33.172Z"
+    },
+    {
+      "file": "send-twice.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scenario": "repeat",
+      "sends": 2,
+      "savedRequests": 1,
+      "outcomes": ["accepted", "accepted"],
+      "technicalPanel": false,
+      "capturedAt": "2026-10-14T23:33:33.392Z"
+    },
+    {
+      "file": "lost-reply.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scenario": "lost",
+      "sends": 1,
+      "savedRequests": 1,
+      "outcomes": ["unknown"],
+      "technicalPanel": false,
+      "capturedAt": "2026-10-14T23:33:33.605Z"
+    },
+    {
+      "file": "technical-panel.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scenario": "lost",
+      "sends": 1,
+      "savedRequests": 1,
+      "outcomes": ["unknown"],
+      "technicalPanel": true,
+      "capturedAt": "2026-10-14T23:33:33.749Z"
+    },
+    {
+      "file": "technical-mobile.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scenario": "lost",
+      "sends": 1,
+      "savedRequests": 1,
+      "outcomes": ["unknown"],
+      "technicalPanel": true,
+      "capturedAt": "2026-10-14T23:33:33.818Z"
+    },
+    {
+      "file": "scenario-mobile.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scenario": "lost",
+      "sends": 1,
+      "savedRequests": 1,
+      "outcomes": ["unknown"],
+      "technicalPanel": false,
+      "capturedAt": "2026-10-14T23:33:33.890Z"
+    },
+    {
+      "file": "recovered-reply.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scenario": "lost",
+      "sends": 2,
+      "savedRequests": 1,
+      "outcomes": ["unknown", "accepted"],
+      "technicalPanel": false,
+      "capturedAt": "2026-10-14T23:33:34.004Z"
+    },
+    {
+      "file": "concurrent-sends.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scenario": "parallel",
+      "sends": 20,
+      "savedRequests": 1,
+      "outcomes": [
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted"
+      ],
+      "technicalPanel": false,
+      "capturedAt": "2026-10-14T23:33:34.339Z"
+    },
+    {
+      "file": "rolled-back.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scenario": "rollback",
+      "sends": 1,
+      "savedRequests": 0,
+      "outcomes": ["retryable"],
+      "technicalPanel": false,
+      "capturedAt": "2026-10-14T23:33:34.487Z"
+    },
+    {
+      "file": "recovered-failure.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scenario": "rollback",
+      "sends": 2,
+      "savedRequests": 1,
+      "outcomes": ["retryable", "accepted"],
+      "technicalPanel": false,
+      "capturedAt": "2026-10-14T23:33:34.593Z"
+    },
+    {
+      "file": "changed-content.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scenario": "conflict",
+      "sends": 2,
+      "savedRequests": 1,
+      "outcomes": ["accepted", "conflict"],
+      "technicalPanel": false,
+      "capturedAt": "2026-10-14T23:33:34.821Z"
+    },
+    {
+      "file": "separate-requests.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scenario": "new",
+      "sends": 2,
+      "savedRequests": 2,
+      "outcomes": ["accepted"],
+      "technicalPanel": false,
+      "capturedAt": "2026-10-14T23:33:35.420Z"
+    }
+  ],
+  "recording": {
+    "file": "request-reply.gif",
+    "sourceRevision": "ea9baf468b5576671140de68a2e860dcc50f3631",
+    "sourceTag": "v0.3.1",
+    "capturedAt": "2026-10-14T23:32:25.737Z",
+    "ffmpeg": "ffmpeg version 8.1.2 Copyright (c) 2000-2026 the FFmpeg developers",
+    "scenario": "lost",
+    "description": "Actual browser recording: lost reply after commit, then retry of the same request. Encoded at 12fps and 960px wide; playback speed preserved. Not a network timing measurement."
+  }
+}

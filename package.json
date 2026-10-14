@@ -20,7 +20,8 @@
     "test:browser": "playwright test",
     "test": "pnpm test:unit && pnpm test:integration && pnpm test:browser",
     "check": "pnpm format:check && pnpm lint && pnpm build && pnpm typecheck && pnpm test",
-    "demo:cli": "node scripts/demo.mjs"
+    "demo:cli": "node scripts/demo.mjs",
+    "docs:capture": "pnpm build && playwright test --config playwright.capture.config.mjs && prettier --write docs/visuals/manifest.json"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.11.1",

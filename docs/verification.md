@@ -1,5 +1,39 @@
 # Verification record
 
+## Documentation visuals refreshed — 15 October 2026
+
+The current README and [visual tour](visual-tour.md) use twelve fresh PNG captures
+covering all six scenarios, intermediate failure/recovery states, the expanded
+technical panel and its narrow-screen layout. A real browser recording shows the
+lost-reply exchange and successful retry. The runtime source is immutable
+[v0.3.1](https://github.com/FredDevAxes/idempotent-requests-lab/tree/v0.3.1), revision
+`ea9baf468b5576671140de68a2e860dcc50f3631`. The API and frontend have not changed in
+this documentation update.
+
+The [manifest](visuals/manifest.json) records the actual viewport, browser, source
+revision, send count, persisted-row count and capture time for each PNG. Source
+provenance is also embedded in PNG text metadata. All captures use the compiled app,
+real HTTP and PostgreSQL, with fictional data in a temporary isolated schema.
+The mobile captures use a 390×844 viewport; desktop uses 1440×900. Expanded images
+include the full document height. Static shots use reduced motion; the GIF preserves
+normal app motion and playback speed, encoded with the FFmpeg version in the manifest.
+
+`CAPTURE_GIF=true pnpm docs:capture` succeeded locally: build, font readiness,
+horizontal overflow and actual outcomes checked before saving. The capture server
+was stopped and its schema dropped afterwards; the running user demo was untouched.
+Both the static-only and GIF capture commands passed locally. `pnpm check` also
+passed again: formatting, lint, types, builds and all 49 regression cases. The
+[local output](evidence/visual-refresh-check.txt) preserves those executions.
+The command and dedicated Playwright configuration are committed. CI also executes
+the static capture path after `pnpm check`; that step is separate from the 49-case
+regression suite. Historical evidence and immutable tags remain intact.
+
+The README, presenter protocol, architecture, risk matrix and review page now agree
+with manual scenario selection, same-scenario restart, inline introductions and
+integrated technical evidence. Local Markdown/image links and screenshot provenance
+were checked. This documentation refresh is not a new UI or accessibility audit;
+other browsers and native assistive-technology combinations remain unverified.
+
 ## Manual navigation and exchange motion — v0.3.1
 
 Scenario changes now happen only through the scenario rail (or its narrow-screen
@@ -44,7 +78,7 @@ legacy session recovery, keyboard/axe checks, 200% text reflow, scenario-scoped 
 collapsed defaults, actual identifier copy, and truthful lost-reply summaries before
 sending and after a failed server read. See [browser cases](evidence/v030-browser-cases.json).
 
-Current screenshots use the `workspace-c-` prefix under `docs/evidence/`. They are
+The v0.3.0 screenshots use the `workspace-c-` prefix under `docs/evidence/`. They are
 compiled-app captures, with provenance embedded, at 1536×1024 (approved reference size),
 1440×1024, 390×844, 659×853 and 640×800 with enlarged text. UUIDs and timestamps are real
 fictional test records. Older screenshots and verification sections belong to earlier
