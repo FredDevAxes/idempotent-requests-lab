@@ -39,8 +39,8 @@ apps/web build: dist/index.html                                                 
 apps/web build: dist/assets/atkinson-hyperlegible-next-latin-ext-wght-normal-C6vrW8VD.woff2   19.09 kB
 apps/web build: dist/assets/atkinson-hyperlegible-next-latin-wght-normal-BcXVPD7q.woff2       34.00 kB
 apps/web build: dist/assets/index-BNBe9VSB.css                                                15.76 kB │ gzip:   4.45 kB
-apps/web build: dist/assets/index-Bm_JP4sA.js                                                339.07 kB │ gzip: 104.01 kB
-apps/web build: ✓ built in 804ms
+apps/web build: dist/assets/index-CXiJtZ_M.js                                                339.11 kB │ gzip: 104.01 kB
+apps/web build: ✓ built in 791ms
 apps/web build: Done
 
 > idempotent-requests-lab@0.3.1 typecheck <repository>
@@ -61,8 +61,8 @@ apps/web typecheck: Done
 > idempotent-requests-lab@0.3.1 test:unit <repository>
 > node --test tests/unit.cjs
 
-✔ canonical inputs collapse whitespace and normalize Unicode (2.401584ms)
-✔ invalid payloads and keys are rejected (0.428291ms)
+✔ canonical inputs collapse whitespace and normalize Unicode (1.897375ms)
+✔ invalid payloads and keys are rejected (0.434167ms)
 ℹ tests 2
 ℹ suites 0
 ℹ pass 2
@@ -70,26 +70,26 @@ apps/web typecheck: Done
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 94.985208
+ℹ duration_ms 99.239208
 
 > idempotent-requests-lab@0.3.1 test:integration <repository>
 > node --test --test-concurrency=1 tests/integration.cjs
 
-✔ health verifies PostgreSQL, normal creation and exact sequential replay (212.024584ms)
-✔ 2 concurrent sends across two API instances and PostgreSQL connections create one row (16.594042ms)
-✔ 20 concurrent sends across two API instances and PostgreSQL connections create one row (49.219083ms)
-✔ sequential content conflict rejects without a duplicate (15.055ms)
-✔ concurrent different content accepts exactly one winner (14.6635ms)
-✔ identical data with distinct keys represents two intentions (11.182542ms)
-✔ missing/invalid key or payload creates nothing (9.975417ms)
-✔ pre-commit barrier hides both writes; injected failure rolls back and permits retry (29.58775ms)
-✔ commit then destroyed HTTP socket leaves durable success for retry (20.760458ms)
-✔ retention before 24h, explicit purge after 24h and key reuse (31.856542ms)
-✔ observed lock wait expires with a retryable response then recovers (788.030125ms)
-✔ default mode rejects every fault header and hides all demo controls (13.831542ms)
-✔ reset requires an explicit confirmation and invalid controls write nothing (11.351583ms)
-✔ API process restart recovers the committed response (595.888333ms)
-✔ production disables demo even with explicit local opt-in (268.822125ms)
+✔ health verifies PostgreSQL, normal creation and exact sequential replay (230.605334ms)
+✔ 2 concurrent sends across two API instances and PostgreSQL connections create one row (18.139291ms)
+✔ 20 concurrent sends across two API instances and PostgreSQL connections create one row (58.0555ms)
+✔ sequential content conflict rejects without a duplicate (18.975333ms)
+✔ concurrent different content accepts exactly one winner (15.567417ms)
+✔ identical data with distinct keys represents two intentions (17.906291ms)
+✔ missing/invalid key or payload creates nothing (12.972375ms)
+✔ pre-commit barrier hides both writes; injected failure rolls back and permits retry (31.710416ms)
+✔ commit then destroyed HTTP socket leaves durable success for retry (19.453375ms)
+✔ retention before 24h, explicit purge after 24h and key reuse (34.366791ms)
+✔ observed lock wait expires with a retryable response then recovers (794.045125ms)
+✔ default mode rejects every fault header and hides all demo controls (11.612916ms)
+✔ reset requires an explicit confirmation and invalid controls write nothing (11.521417ms)
+✔ API process restart recovers the committed response (588.463334ms)
+✔ production disables demo even with explicit local opt-in (273.006834ms)
 ℹ tests 15
 ℹ suites 0
 ℹ pass 15
@@ -97,87 +97,87 @@ apps/web typecheck: Done
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 2424.620166
+ℹ duration_ms 2534.128666
 
 > idempotent-requests-lab@0.3.1 test:browser <repository>
 > playwright test
 
-[WebServer] (node:24792) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (node:26197) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 [WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
-[WebServer] (node:24798) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (node:26198) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 [WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
 
 Running 32 tests using 1 worker
 
-(node:24807) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:26244) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
-  ✓   1 tests/browser/critical.spec.mjs:53:1 › normal send, exact retry and a distinct intention (1.2s)
-[WebServer] 1:11:29 AM [vite] http proxy error: /interventions
+  ✓   1 tests/browser/critical.spec.mjs:53:1 › normal send, exact retry and a distinct intention (1.3s)
+[WebServer] 1:14:02 AM [vite] http proxy error: /interventions
 [WebServer] Error: socket hang up
 [WebServer]     at Socket.socketOnEnd (node:_http_client:599:25)
 [WebServer]     at Socket.emit (node:events:520:35)
 [WebServer]     at endReadableNT (node:internal/streams/readable:1701:12)
 [WebServer]     at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
-  ✓   2 tests/browser/critical.spec.mjs:69:1 › real response loss, reload with preserved key/content and recovery (699ms)
-  ✓   3 tests/browser/critical.spec.mjs:93:1 › content conflict is visible without a duplicate (424ms)
-  ✓   4 tests/browser/critical.spec.mjs:107:1 › pre-commit failure and recovery leave no partial writes (406ms)
-  ✓   5 tests/browser/critical.spec.mjs:123:1 › twenty actual browser sends create one record (401ms)
-  ✓   6 tests/browser/critical.spec.mjs:133:1 › mobile and keyboard path, reduced motion, contrast and 200% reflow (1.2s)
-  ✓   7 tests/browser/critical.spec.mjs:179:1 › explicit reset confirmation and purge controls (889ms)
-  ✓   8 tests/browser/critical.spec.mjs:207:1 › storage failure prevents sending an unpreserved intention (293ms)
-  ✓   9 tests/browser/critical.spec.mjs:222:1 › reload during an in-flight commit preserves the intent and recovers (614ms)
-  ✓  10 tests/browser/guided.spec.mjs:52:1 › first-time view explains the next action and keeps identifiers in the technical panel (295ms)
-  ✓  11 tests/browser/guided.spec.mjs:87:1 › guided sequential replay explains two sends and one actual saved request (408ms)
-[WebServer] 1:11:34 AM [vite] http proxy error: /interventions
+  ✓   2 tests/browser/critical.spec.mjs:69:1 › real response loss, reload with preserved key/content and recovery (712ms)
+  ✓   3 tests/browser/critical.spec.mjs:93:1 › content conflict is visible without a duplicate (469ms)
+  ✓   4 tests/browser/critical.spec.mjs:107:1 › pre-commit failure and recovery leave no partial writes (434ms)
+  ✓   5 tests/browser/critical.spec.mjs:123:1 › twenty actual browser sends create one record (412ms)
+  ✓   6 tests/browser/critical.spec.mjs:133:1 › mobile and keyboard path, reduced motion, contrast and 200% reflow (1.1s)
+  ✓   7 tests/browser/critical.spec.mjs:179:1 › explicit reset confirmation and purge controls (584ms)
+  ✓   8 tests/browser/critical.spec.mjs:207:1 › storage failure prevents sending an unpreserved intention (334ms)
+  ✓   9 tests/browser/critical.spec.mjs:222:1 › reload during an in-flight commit preserves the intent and recovers (654ms)
+  ✓  10 tests/browser/guided.spec.mjs:52:1 › first-time view explains the next action and keeps identifiers in the technical panel (305ms)
+  ✓  11 tests/browser/guided.spec.mjs:87:1 › guided sequential replay explains two sends and one actual saved request (411ms)
+[WebServer] 1:14:08 AM [vite] http proxy error: /interventions
 [WebServer] Error: socket hang up
 [WebServer]     at Socket.socketOnEnd (node:_http_client:599:25)
 [WebServer]     at Socket.emit (node:events:520:35)
 [WebServer]     at endReadableNT (node:internal/streams/readable:1701:12)
 [WebServer]     at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
-  ✓  12 tests/browser/guided.spec.mjs:115:1 › guided lost response, panel toggle and reload preserve the same reference and recover (576ms)
-  ✓  13 tests/browser/guided.spec.mjs:149:1 › guided concurrency uses twenty real sends and one saved record (369ms)
-  ✓  14 tests/browser/guided.spec.mjs:161:1 › guided rollback shows no saved record then a successful retry (366ms)
-  ✓  15 tests/browser/guided.spec.mjs:176:1 › guided content conflict preserves the original priority (767ms)
-  ✓  16 tests/browser/guided.spec.mjs:198:1 › guided new intention uses two keys and creates two genuine requests (395ms)
-  ✓  17 tests/browser/guided.spec.mjs:212:1 › guided results exclude earlier experiments without deleting them (436ms)
-  ✓  18 tests/browser/guided.spec.mjs:230:1 › server read failure never presents a fabricated zero or success conclusion (337ms)
-  ✓  19 tests/browser/guided.spec.mjs:258:1 › existing v0.1 browser intent remains intact until a new experiment is explicitly started (318ms)
+  ✓  12 tests/browser/guided.spec.mjs:115:1 › guided lost response, panel toggle and reload preserve the same reference and recover (568ms)
+  ✓  13 tests/browser/guided.spec.mjs:149:1 › guided concurrency uses twenty real sends and one saved record (475ms)
+  ✓  14 tests/browser/guided.spec.mjs:161:1 › guided rollback shows no saved record then a successful retry (353ms)
+  ✓  15 tests/browser/guided.spec.mjs:176:1 › guided content conflict preserves the original priority (407ms)
+  ✓  16 tests/browser/guided.spec.mjs:198:1 › guided new intention uses two keys and creates two genuine requests (339ms)
+  ✓  17 tests/browser/guided.spec.mjs:212:1 › guided results exclude earlier experiments without deleting them (454ms)
+  ✓  18 tests/browser/guided.spec.mjs:230:1 › server read failure never presents a fabricated zero or success conclusion (328ms)
+  ✓  19 tests/browser/guided.spec.mjs:258:1 › existing v0.1 browser intent remains intact until a new experiment is explicitly started (332ms)
   ✓  20 tests/browser/guided.spec.mjs:292:1 › guided keyboard, accessible disclosure, mobile and 200 percent reflow (1.0s)
-  ✓  21 tests/browser/guided.spec.mjs:356:1 › in-app browser width keeps the guided action and observations readable (198ms)
-[WebServer] 1:11:39 AM [vite] http proxy error: /interventions
+  ✓  21 tests/browser/guided.spec.mjs:356:1 › in-app browser width keeps the guided action and observations readable (174ms)
+[WebServer] 1:14:12 AM [vite] http proxy error: /interventions
 [WebServer] Error: socket hang up
 [WebServer]     at Socket.socketOnEnd (node:_http_client:599:25)
 [WebServer]     at Socket.emit (node:events:520:35)
 [WebServer]     at endReadableNT (node:internal/streams/readable:1701:12)
 [WebServer]     at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
-  ✓  22 tests/browser/guided.spec.mjs:368:1 › scenario navigation scopes the drawer and preserves the unfinished request (546ms)
-[WebServer] 1:11:40 AM [vite] http proxy error: /interventions
+  ✓  22 tests/browser/guided.spec.mjs:368:1 › scenario navigation scopes the drawer and preserves the unfinished request (771ms)
+[WebServer] 1:14:13 AM [vite] http proxy error: /interventions
 [WebServer] Error: socket hang up
 [WebServer]     at Socket.socketOnEnd (node:_http_client:599:25)
 [WebServer]     at Socket.emit (node:events:520:35)
 [WebServer]     at endReadableNT (node:internal/streams/readable:1701:12)
 [WebServer]     at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
-  ✓  23 tests/browser/guided.spec.mjs:406:1 › version C expanded panel keeps the scenario action visible and copies the real key (879ms)
-[WebServer] 1:11:41 AM [vite] http proxy error: /interventions
+  ✓  23 tests/browser/guided.spec.mjs:406:1 › version C expanded panel keeps the scenario action visible and copies the real key (1.5s)
+[WebServer] 1:14:15 AM [vite] http proxy error: /interventions
 [WebServer] Error: socket hang up
 [WebServer]     at Socket.socketOnEnd (node:_http_client:599:25)
 [WebServer]     at Socket.emit (node:events:520:35)
 [WebServer]     at endReadableNT (node:internal/streams/readable:1701:12)
 [WebServer]     at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
-  ✓  24 tests/browser/guided.spec.mjs:465:1 › lost-reply summary distinguishes the plan from observed and unavailable evidence (537ms)
-  ✓  25 tests/browser/guided.spec.mjs:550:3 › repeat: completion and restart stay in the selected scenario and keep server records (886ms)
-[WebServer] 1:11:42 AM [vite] http proxy error: /interventions
+  ✓  24 tests/browser/guided.spec.mjs:465:1 › lost-reply summary distinguishes the plan from observed and unavailable evidence (608ms)
+  ✓  25 tests/browser/guided.spec.mjs:550:3 › repeat: completion and restart stay in the selected scenario and keep server records (552ms)
+[WebServer] 1:14:16 AM [vite] http proxy error: /interventions
 [WebServer] Error: socket hang up
 [WebServer]     at Socket.socketOnEnd (node:_http_client:599:25)
 [WebServer]     at Socket.emit (node:events:520:35)
 [WebServer]     at endReadableNT (node:internal/streams/readable:1701:12)
 [WebServer]     at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
-  ✓  26 tests/browser/guided.spec.mjs:550:3 › lost: completion and restart stay in the selected scenario and keep server records (465ms)
-  ✓  27 tests/browser/guided.spec.mjs:550:3 › parallel: completion and restart stay in the selected scenario and keep server records (455ms)
-  ✓  28 tests/browser/guided.spec.mjs:550:3 › rollback: completion and restart stay in the selected scenario and keep server records (487ms)
-  ✓  29 tests/browser/guided.spec.mjs:550:3 › conflict: completion and restart stay in the selected scenario and keep server records (470ms)
-  ✓  30 tests/browser/guided.spec.mjs:550:3 › new: completion and restart stay in the selected scenario and keep server records (573ms)
-  ✓  31 tests/browser/guided.spec.mjs:614:1 › exchange motion waits for an actual reply, ends, and does not replay on navigation or technical controls (2.2s)
-  ✓  32 tests/browser/guided.spec.mjs:704:1 › reply animation and client confirmation do not wait for independent server evidence (321ms)
+  ✓  26 tests/browser/guided.spec.mjs:550:3 › lost: completion and restart stay in the selected scenario and keep server records (483ms)
+  ✓  27 tests/browser/guided.spec.mjs:550:3 › parallel: completion and restart stay in the selected scenario and keep server records (458ms)
+  ✓  28 tests/browser/guided.spec.mjs:550:3 › rollback: completion and restart stay in the selected scenario and keep server records (422ms)
+  ✓  29 tests/browser/guided.spec.mjs:550:3 › conflict: completion and restart stay in the selected scenario and keep server records (435ms)
+  ✓  30 tests/browser/guided.spec.mjs:550:3 › new: completion and restart stay in the selected scenario and keep server records (423ms)
+  ✓  31 tests/browser/guided.spec.mjs:614:1 › exchange motion waits for an actual reply, ends, and does not replay on navigation or technical controls (2.1s)
+  ✓  32 tests/browser/guided.spec.mjs:704:1 › reply animation and client confirmation do not wait for independent server evidence (298ms)
 
-  32 passed (21.6s)
+  32 passed (22.1s)

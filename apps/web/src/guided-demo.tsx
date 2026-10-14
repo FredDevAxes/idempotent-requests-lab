@@ -320,7 +320,9 @@ export function GuidedDemo({
             ? lab.notice
             : lab.sending
               ? "Sending real requests to the API."
-              : `${clientTitle}. ${unavailable ? "Server evidence unavailable." : "Server records refreshed."}`}
+              : lab.busy
+                ? `${clientTitle}. Checking server records.`
+                : `${clientTitle}. ${unavailable ? "Server evidence unavailable." : "Server records refreshed."}`}
         </p>
         {!active && lab.session.locked && (
           <p className="preserved-note">

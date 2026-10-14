@@ -732,6 +732,12 @@ test("reply animation and client confirmation do not wait for independent server
       "Checking records…",
     );
     await expect(page.locator(".result-counts")).not.toContainText("0 saved");
+    await expect(page.locator(".scenario-notices [role=status]")).toContainText(
+      "Checking server records.",
+    );
+    await expect(
+      page.locator(".scenario-notices [role=status]"),
+    ).not.toContainText("Server records refreshed.");
   } finally {
     release();
   }
