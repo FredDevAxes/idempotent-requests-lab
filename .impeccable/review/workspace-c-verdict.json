@@ -1,0 +1,29 @@
+{
+  "disposition": "ship",
+  "scope": "Focused verdict on five scored corrections, not a whole-surface pass.",
+  "fixes": [
+    {
+      "item": "Primary action scale and hero fidelity gate",
+      "status": "resolved"
+    },
+    {
+      "item": "Paper-plane send symbol",
+      "status": "resolved"
+    },
+    {
+      "item": "Observation-aware lost-reply summary",
+      "status": "resolved"
+    },
+    {
+      "item": "Mobile brand spacing",
+      "status": "resolved"
+    },
+    {
+      "item": "DESIGN.md and design.json for approved C",
+      "status": "resolved"
+    }
+  ],
+  "regressionsObserved": false,
+  "mechanicalLimit": "Responsive comparison remains open: normalized crops falsely classify the diagram and HTTP activity as missing at 1440px. Reviewer inspected full capture and paired crops; both are visible. No forced pass recorded.",
+  "automatedCoverage": "24 Chromium cases, including six guided scenarios and nine manual journeys. Unit and real PostgreSQL/HTTP suites also executed."
+}

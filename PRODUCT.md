@@ -10,7 +10,7 @@ web
 
 Visitors unfamiliar with idempotency, discovering the lab through an accompanied
 demonstration. The presenter should be able to guide one action at a time and explain
-its outcome. Technical visitors can inspect a separate controls and evidence tab.
+its outcome. Technical visitors can inspect a collapsible controls and evidence panel on the same page.
 
 ## Product Purpose
 
@@ -24,7 +24,7 @@ client knows, and why a retry is safe within the documented retention boundary.
 A fictional maintenance request in a local NestJS, React/Vite and PostgreSQL lab.
 Real persisted requests and actual HTTP attempts support the demonstration. The
 user has requested a complete interface redesign with guided scenarios, simple
-results and a dedicated technical tab. The API contract remains authoritative.
+results and an integrated bottom technical panel, collapsed by default. The API contract remains authoritative.
 
 ## Capabilities and Constraints
 
@@ -47,7 +47,7 @@ real API/database activity. No simulation may pretend a business operation succe
 - Start with the visitor's situation before introducing the technical term.
 - Reveal one useful action at a time during the accompanied demonstration.
 - Explain client uncertainty separately from actual server persistence.
-- Keep expert controls and raw identifiers in their own tab.
+- Keep expert controls and raw identifiers in a collapsible panel within the current scenario.
 - State the retention boundary alongside conclusions about safe retries.
 
 ## Accessibility & Inclusion

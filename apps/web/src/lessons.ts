@@ -20,12 +20,12 @@ export const lessons: {
   },
   {
     id: "lost",
-    label: "Lose a reply",
+    label: "Lost reply",
     title: "Saved, but not confirmed.",
     setup:
       "The server saves your request, then the connection drops before the reply reaches you. You do not know whether it worked.",
     firstAction: "Send with a lost reply",
-    retryAction: "Try the same request again",
+    retryAction: "Retry same request",
     needsDemo: true,
   },
   {
@@ -50,7 +50,7 @@ export const lessons: {
   },
   {
     id: "conflict",
-    label: "Change the content",
+    label: "Change content",
     title: "Same reference, different request?",
     setup:
       "First, save a routine inspection. Then try to change it to urgent using the same reference. A retry must not silently change the original.",

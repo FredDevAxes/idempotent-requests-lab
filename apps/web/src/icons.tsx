@@ -7,7 +7,11 @@ type Name =
   | "retry"
   | "code"
   | "play"
-  | "warning";
+  | "warning"
+  | "chevron"
+  | "copy"
+  | "close"
+  | "send";
 export function Icon({
   name,
   className = "",
@@ -16,6 +20,20 @@ export function Icon({
   className?: string;
 }) {
   const paths: Record<Name, React.ReactNode> = {
+    send: (
+      <>
+        <path d="m3 10 18-7-7 18-3-8-8-3Z" />
+        <path d="m11 13 10-10" />
+      </>
+    ),
+    chevron: <path d="m6 9 6 6 6-6" />,
+    copy: (
+      <>
+        <rect x="8" y="8" width="12" height="13" rx="2" />
+        <path d="M16 8V3H3v13h5" />
+      </>
+    ),
+    close: <path d="m6 6 12 12M6 18 18 6" />,
     document: (
       <>
         <path d="M7 3h7l4 4v14H6V3z" />

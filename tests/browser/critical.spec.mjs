@@ -12,9 +12,8 @@ async function counts(requests, keys) {
   expect(result.rows[0]).toEqual({ requests, keys });
 }
 async function openTechnical(page) {
-  await page
-    .getByRole("tab", { name: "Technical controls", exact: true })
-    .click();
+  await page.locator("#technical-toggle").click();
+  await page.locator(".advanced-tools > summary").click();
 }
 async function scenario(page, label) {
   await page
@@ -53,7 +52,9 @@ test.beforeEach(async ({ request, page }) => {
 test.afterAll(async () => pool.end());
 test("normal send, exact retry and a distinct intention", async ({ page }) => {
   await page.getByRole("button", { name: "Send request", exact: true }).click();
-  await expect(page.getByRole("status").first()).toContainText("Result known.");
+  await expect(page.getByTestId("technical-status")).toContainText(
+    "Result known.",
+  );
   const id = await page.getByTestId("business-id").textContent();
   await page.getByRole("button", { name: "Retry same request" }).click();
   await expect(page.locator(".timeline li")).toHaveCount(2);
@@ -72,7 +73,7 @@ test("real response loss, reload with preserved key/content and recovery", async
   const key = await page.getByTestId("intention-key").textContent();
   const input = await page.getByLabel("What needs attention?").inputValue();
   await page.getByRole("button", { name: "Send request", exact: true }).click();
-  await expect(page.getByRole("status").first()).toContainText(
+  await expect(page.getByTestId("technical-status")).toContainText(
     "Result unknown.",
   );
   await expect(page.getByTestId("saved-requests").locator("li")).toHaveCount(1);
@@ -91,11 +92,13 @@ test("real response loss, reload with preserved key/content and recovery", async
 });
 test("content conflict is visible without a duplicate", async ({ page }) => {
   await page.getByRole("button", { name: "Send request", exact: true }).click();
-  await expect(page.getByRole("status").first()).toContainText("Result known.");
+  await expect(page.getByTestId("technical-status")).toContainText(
+    "Result known.",
+  );
   const id = await page.getByTestId("business-id").textContent();
   await scenario(page, "Change content under the same key");
   await page.getByRole("button", { name: "Retry same request" }).click();
-  await expect(page.getByRole("status").first()).toContainText(
+  await expect(page.getByTestId("technical-status")).toContainText(
     "Content conflict.",
   );
   await expect(page.getByTestId("business-id")).toHaveText(id);
@@ -106,13 +109,15 @@ test("pre-commit failure and recovery leave no partial writes", async ({
 }) => {
   await scenario(page, "Fail before commit");
   await page.getByRole("button", { name: "Send request", exact: true }).click();
-  await expect(page.getByRole("status").first()).toContainText(
+  await expect(page.getByTestId("technical-status")).toContainText(
     "Temporarily unavailable",
   );
   await counts(0, 0);
   await scenario(page, "Normal delivery");
   await page.getByRole("button", { name: "Retry same request" }).click();
-  await expect(page.getByRole("status").first()).toContainText("Result known.");
+  await expect(page.getByTestId("technical-status")).toContainText(
+    "Result known.",
+  );
   await counts(1, 1);
 });
 test("twenty actual browser sends create one record", async ({ page }) => {
@@ -132,12 +137,7 @@ test("mobile and keyboard path, reduced motion, contrast and 200% reflow", async
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.reload();
   await openTechnical(page);
-  await page.keyboard.press("Shift+Tab");
-  await page.keyboard.press("Shift+Tab");
-  await expect(
-    page.getByRole("link", { name: "Skip to the next action" }),
-  ).toBeFocused();
-  await page.keyboard.press("Enter");
+  await page.getByLabel("Site", { exact: true }).focus();
   await expect(page.getByLabel("Site", { exact: true })).toBeFocused();
   await page.keyboard.press("Tab");
   await expect(page.getByLabel("What needs attention?")).toBeFocused();
@@ -148,7 +148,9 @@ test("mobile and keyboard path, reduced motion, contrast and 200% reflow", async
     page.getByRole("button", { name: "Send request", exact: true }),
   ).toBeFocused();
   await page.keyboard.press("Enter");
-  await expect(page.getByRole("status").first()).toContainText("Result known.");
+  await expect(page.getByTestId("technical-status")).toContainText(
+    "Result known.",
+  );
   await counts(1, 1);
   expect(
     await page.evaluate(
@@ -176,7 +178,9 @@ test("mobile and keyboard path, reduced motion, contrast and 200% reflow", async
 });
 test("explicit reset confirmation and purge controls", async ({ page }) => {
   await page.getByRole("button", { name: "Send request", exact: true }).click();
-  await expect(page.getByRole("status").first()).toContainText("Result known.");
+  await expect(page.getByTestId("technical-status")).toContainText(
+    "Result known.",
+  );
   await scenario(page, "Normal delivery");
   await page.getByRole("button", { name: "Purge eligible keys" }).click();
   await expect(page.getByTestId("control-status")).toContainText(
@@ -209,7 +213,7 @@ test("storage failure prevents sending an unpreserved intention", async ({
     };
   });
   await page.getByRole("button", { name: "Send request", exact: true }).click();
-  await expect(page.getByRole("status").first()).toContainText(
+  await expect(page.getByTestId("technical-status")).toContainText(
     "No request sent",
   );
   await counts(0, 0);
@@ -237,7 +241,7 @@ test("reload during an in-flight commit preserves the intent and recovers", asyn
   await page.reload();
   await openTechnical(page);
   await expect(page.getByTestId("intention-key")).toHaveText(key);
-  await expect(page.getByRole("status").first()).toContainText(
+  await expect(page.getByTestId("technical-status")).toContainText(
     "No result confirmed",
   );
   expect((await request.post(`/api/demo/gates/${id}/release`)).status()).toBe(
@@ -245,6 +249,8 @@ test("reload during an in-flight commit preserves the intent and recovers", asyn
   );
   await page.unroute("**/api/interventions");
   await page.getByRole("button", { name: "Retry same request" }).click();
-  await expect(page.getByRole("status").first()).toContainText("Result known.");
+  await expect(page.getByTestId("technical-status")).toContainText(
+    "Result known.",
+  );
   await counts(1, 1);
 });

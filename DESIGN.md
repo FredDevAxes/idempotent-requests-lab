@@ -1,269 +1,262 @@
 ---
 name: "Idempotent requests lab"
-description: "A precise, readable workspace for observing request reliability."
+description: "A quiet scenario workspace for observing requests and replies."
 colors:
-  "ink": "#182543"
-  "muted": "#4f5b72"
-  "accent": "#3159ce"
-  "accent-hover": "#2547ac"
-  "surface": "#fff"
-  "ground": "#f5f7fc"
-  "line": "#ccd4e3"
-  "green": "#186443"
-  "green-light": "#eaf6ef"
-  "purple": "#6643a2"
-  "purple-light": "#f0ebfa"
-  "red": "#a12c40"
-  "button-border": "#8b9bb5"
-  "button-hover": "#edf1fa"
-  "button-active": "#e2e9f9"
-  "field-border": "#8292ad"
-  "invalid-surface": "#fbebee"
-  "selected-tab": "#eaf0ff"
-  "selected-step": "#e7edfc"
+  ink: "#182543"
+  muted: "#4f5b72"
+  line: "#ccd4e3"
+  accent: "#1458e9"
+  surface: "#f3f6fc"
+  green: "#186443"
+  purple: "#6643a2"
+  danger: "#a12c40"
+  white: "#fff"
+  rail: "#f2f6fd"
+  explanation: "#354a70"
+  accent-hover: "#183fae"
+  button-hover: "#edf2fc"
+  button-hover-border: "#a0b2d5"
+  nav-hover: "#e6edf9"
+  nav-selected: "#dfe8fc"
+  nav-selected-ink: "#1748cc"
+  state-neutral: "#edf0f5"
+  state-green: "#e3f4e7"
+  state-purple: "#eee6ff"
+  state-danger: "#fbecef"
+  drawer: "#f8faff"
+  drawer-toggle: "#eef3fb"
+  record-border: "#d6dfef"
+  field-border: "#a6b5ce"
+  field-disabled: "#eef1f7"
 typography:
   display:
-    fontFamily: "Atkinson Hyperlegible Next Variable, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
-    fontSize: "2.35rem"
+    fontFamily: "Atkinson Hyperlegible Next Variable, sans-serif"
+    fontSize: "clamp(2rem, 3vw, 2.75rem)"
     fontWeight: 750
-    lineHeight: 1.2
+    lineHeight: 1.1
     letterSpacing: "-0.025em"
   headline:
-    fontFamily: "Atkinson Hyperlegible Next Variable, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
-    fontSize: "1.5rem"
-    fontWeight: 750
-    lineHeight: 1.3
-    letterSpacing: "-0.015em"
-  scene-title:
-    fontFamily: "Atkinson Hyperlegible Next Variable, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
-    fontSize: "1.8rem"
-    fontWeight: 750
-    lineHeight: 1.22
-  result-title:
-    fontFamily: "Atkinson Hyperlegible Next Variable, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
-    fontSize: "1.35rem"
+    fontFamily: "Atkinson Hyperlegible Next Variable, sans-serif"
+    fontSize: "1.15rem"
     fontWeight: 700
-    lineHeight: 1.3
-    letterSpacing: "-0.015em"
   body:
-    fontFamily: "Atkinson Hyperlegible Next Variable, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
+    fontFamily: "Atkinson Hyperlegible Next Variable, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
-    lineHeight: 1.55
+    lineHeight: 1.5
+  introduction:
+    fontFamily: "Atkinson Hyperlegible Next Variable, sans-serif"
+    fontSize: "1.25rem"
+    fontWeight: 400
+    lineHeight: 1.5
+  primary-action:
+    fontFamily: "Atkinson Hyperlegible Next Variable, sans-serif"
+    fontSize: "1.125rem"
+    fontWeight: 600
+  navigation:
+    fontFamily: "Atkinson Hyperlegible Next Variable, sans-serif"
+    fontSize: "1.1rem"
+    lineHeight: 1.2
   label:
-    fontFamily: "Atkinson Hyperlegible Next Variable, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
+    fontFamily: "Atkinson Hyperlegible Next Variable, sans-serif"
     fontSize: "0.9rem"
-    fontWeight: 650
-    lineHeight: 1.55
-  observation-label:
-    fontFamily: "Atkinson Hyperlegible Next Variable, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
-    fontSize: "0.88rem"
-    fontWeight: 650
-    lineHeight: 1.4
-  button:
-    fontFamily: "Atkinson Hyperlegible Next Variable, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
-    fontSize: "1rem"
-    fontWeight: 650
-    lineHeight: 1.55
+    fontWeight: 500
   mono:
     fontFamily: "ui-monospace, SFMono-Regular, Consolas, monospace"
-    fontSize: "0.85rem"
-    fontWeight: 400
-    lineHeight: 1.55
+    fontSize: "0.85em"
 rounded:
-  "field": "6px"
-  "control": "8px"
-  "record": "12px"
-  "technical-panel": "14px"
-  "observation-stage": "16px"
-  "circle": "50%"
+  identifier: "4px"
+  field: "5px"
+  control: "6px"
+  pill: "999px"
+  circle: "50%"
 spacing:
-  "4": "4px"
-  "8": "8px"
-  "10": "10px"
-  "12": "12px"
-  "14": "14px"
-  "16": "16px"
-  "18": "18px"
-  "20": "20px"
-  "22": "22px"
-  "24": "24px"
-  "26": "26px"
-  "28": "28px"
-  "32": "32px"
-  "40": "40px"
+  compact: "0.5rem"
+  control-gap: "0.6rem"
+  small: "0.7rem"
+  regular: "1rem"
+  mobile-gutter: "1.25rem"
+  section: "1.5rem"
+  technical-gap: "1.75rem"
+  large: "2rem"
+  desktop-gutter: "2.5rem"
 components:
   button-primary:
     backgroundColor: "{colors.accent}"
-    textColor: "{colors.surface}"
-    typography: "{typography.button}"
+    textColor: "{colors.white}"
+    typography: "{typography.primary-action}"
     rounded: "{rounded.control}"
-    padding: "10px 16px"
+    padding: "0.7rem 1.25rem"
   button-primary-hover:
     backgroundColor: "{colors.accent-hover}"
   button-secondary:
-    backgroundColor: "{colors.surface}"
+    backgroundColor: "{colors.white}"
     textColor: "{colors.ink}"
-    typography: "{typography.button}"
     rounded: "{rounded.control}"
-    padding: "10px 16px"
+    padding: "0.55rem 0.9rem"
   button-danger:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.red}"
-    typography: "{typography.button}"
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.danger}"
     rounded: "{rounded.control}"
-    padding: "10px 16px"
+    padding: "0.55rem 0.9rem"
   button-text:
     backgroundColor: "transparent"
     textColor: "{colors.accent}"
-    padding: "10px 0"
+    padding: "0"
   field:
-    backgroundColor: "{colors.surface}"
+    backgroundColor: "{colors.white}"
     textColor: "{colors.ink}"
     rounded: "{rounded.field}"
-    padding: "11px 12px"
+    padding: "0.65rem 0.75rem"
     width: "100%"
-  view-tab:
+  scenario-navigation:
     backgroundColor: "transparent"
+    textColor: "{colors.ink}"
+    typography: "{typography.navigation}"
+    padding: "0.6rem 0.8rem"
+    width: "100%"
+  scenario-navigation-current:
+    backgroundColor: "{colors.nav-selected}"
+    textColor: "{colors.nav-selected-ink}"
+  state-label:
+    backgroundColor: "{colors.state-neutral}"
     textColor: "{colors.muted}"
-    padding: "15px 20px"
-  view-tab-selected:
-    backgroundColor: "{colors.selected-tab}"
-    textColor: "{colors.accent}"
-  technical-panel:
-    backgroundColor: "{colors.surface}"
-    rounded: "{rounded.technical-panel}"
-    padding: "24px"
-  observation-stage:
-    backgroundColor: "{colors.surface}"
-    rounded: "{rounded.observation-stage}"
-  takeaway:
-    backgroundColor: "{colors.green-light}"
-    textColor: "{colors.green}"
+    rounded: "{rounded.pill}"
+    padding: "0.4rem 0.9rem"
+  evidence-record:
     rounded: "{rounded.control}"
-    padding: "13px 14px"
-  takeaway-attention:
-    backgroundColor: "{colors.purple-light}"
-    textColor: "{colors.purple}"
+    padding: "0.85rem 1rem"
+  advanced-disclosure:
+    textColor: "{colors.explanation}"
+    padding: "0.4rem 0 0"
+  disclosure-toggle:
+    backgroundColor: "{colors.drawer-toggle}"
+    rounded: "0"
+    padding: "1rem 2rem"
+    width: "100%"
 ---
 
 # Design System: Idempotent requests lab
 
 ## Overview
 
-**Creative North Star: "The Rehearsal Cue Sheet"**
+**Creative North Star: "The Quiet Scenario Workspace"**
 
-The rehearsal cue sheet gives each action a clear place and each observation a readable explanation. Cool paper, deep navy ink and restrained cobalt controls support an accompanied demonstration without decorative staging.
+A quiet scenario workspace gives the next action and its observed outcome a clear place. Near-white blue surfaces, navy text and cobalt controls frame the exchange without decorative staging. The locally served Atkinson typeface preserves the readable voice of the previous interface.
 
-The system separates action, evidence and uncertainty through language, borders and paired state colors. Its depth is flat, its typography is deliberately legible, and its SVG symbols supplement words rather than carrying meaning alone.
+Client uncertainty and server observations remain distinct through explicit words, thin borders and state colors. Technical evidence expands within the same document flow. This record describes the implemented approved C interface; its page-specific direction remains in `apps/web/.impeccable/surfaces/apps-web-src-main-tsx.md`.
 
 **Key Characteristics:**
 
-- Readable task typography with tabular numerals.
-- Flat white observation surfaces on cool paper.
-- State colors paired with explicit result text.
-- Responsive comparison panels and visible keyboard focus.
+- Legible Atkinson text with monospace technical values.
+- Flat surfaces and restrained semantic state washes.
+- Outlined SVGs paired with readable labels.
+- Progressive disclosure with visible keyboard focus.
 
 ## Colors
 
-Cool paper and navy ink support cobalt actions, with green and violet distinguishing evidence from uncertainty. The frontmatter is the normative palette; its names preserve the stylesheet's existing custom properties.
+Cool near-white surfaces and navy ink support a cobalt action accent. Frontmatter values are extracted from `apps/web/src/style.css`; the original custom-property names are retained. Additional descriptive names identify repeated literal values.
 
 ### Primary
 
-- **Cobalt Action** (`accent`, `accent-hover`): links, next-action buttons, selected navigation and focus.
+- **Cobalt Action** (`accent`, `accent-hover`): primary actions, links, carets, selected step circles and focus outlines.
 
 ### Secondary
 
-- **Recorded Green** (`green`, `green-light`): persisted results, verified takeaways and live evidence labels.
-- **Uncertainty Violet** (`purple`, `purple-light`): missing confirmation, conflicting content and attention takeaways.
-- **Failure Red** (`red`, `invalid-surface`): retryable or invalid results, warnings and destructive controls.
+- **Observed Green** (`green`, `state-green`): accepted replies and observed server records.
+- **Uncertainty Violet** (`purple`, `state-purple`): missing confirmation.
+- **Failure Red** (`danger`, `state-danger`): conflicts, retryable failures, warnings and destructive action text.
 
 ### Neutral
 
-- **Navy Ink** (`ink`): principal text and brand.
-- **Slate Explanation** (`muted`): supporting text and inactive navigation.
-- **White Stage / Cool Paper** (`surface`, `ground`): bounded evidence against the page ground.
-- **Quiet Divider** (`line`): panel outlines and internal separators.
-- **Control Edges** (`button-border`, `field-border`): stronger boundaries on interactive controls.
-- **Interaction Washes** (`button-hover`, `button-active`, `selected-tab`, `selected-step`): visible control and navigation states.
+- **Navy Ink / Slate Explanation** (`ink`, `muted`, `explanation`): principal and supporting text.
+- **White / Cool Rail** (`white`, `rail`, `surface`): workspace, navigation ground and scrollbar track.
+- **Evidence Washes** (`drawer`, `drawer-toggle`): expanded evidence and its disclosure bar.
+- **Control Boundaries** (`line`, `record-border`, `field-border`): dividers, evidence records and fields.
+- **Interaction Washes** (`button-hover`, `nav-hover`, `nav-selected`, `field-disabled`): hovered, selected and disabled controls; selected navigation has its own ink.
 
-**The Evidence Color Rule.** Green marks observed saved facts; violet marks unknown confirmation or a refused content change. Keep their text explanations alongside the color.
+**The Evidence Color Rule.** Green accompanies observed persistence or acceptance; violet accompanies missing confirmation. Conflict and retryable failure use danger red. Always retain readable state text.
 
 ## Typography
 
-**Display Font / Body Font:** Atkinson Hyperlegible Next Variable, with the platform sans-serif fallback stack in the frontmatter.
-**Label/Mono Font:** the same Atkinson family for labels; the frontmatter's system monospace stack for technical identifiers.
-
-The readable variable family is self-hosted through Fontsource (package version 5.3.0, OFL-1.1), imported by the web entry point. It supplies the display as well as the body face; the system font stack is a loading fallback, not a display identity. Numerals are tabular across the interface.
+**Display / Body Font:** Atkinson Hyperlegible Next Variable, imported from Fontsource in the web entry point, with a sans-serif loading fallback.
+**Label/Mono Font:** Atkinson labels; the frontmatter monospace stack for identifiers, payloads and HTTP evidence.
 
 ### Hierarchy
 
-- **Display:** the page introduction; balanced wrapping and tight tracking.
-- **Headline:** section headings; the scene-title role is larger on wide screens.
-- **Result title:** a concise observation outcome, using the browser's bold heading weight (700).
-- **Body:** explanatory paragraphs, with the introduction limited to 63ch and scene copy to 45ch on wide screens.
-- **Label:** form labels and observation names; action buttons use weight 650.
-- **Mono:** keys and identifiers in the technical evidence definitions.
+- **Display:** balanced scenario headings, using the fluid size and tight tracking in the frontmatter.
+- **Headline:** endpoint and evidence section headings.
+- **Body:** regular interface text; paragraphs use the recorded line height.
+- **Introduction:** scenario summary text, constrained to 65ch; reduced to 1.05rem at the narrow breakpoint.
+- **Primary action:** 18px at the default root size, weight 600.
+- **Navigation:** left-aligned scenario names; the current item uses weight 650.
+- **Label:** quiet navigation section label. Supporting evidence text uses 0.8–0.95rem; identifiers use 0.78rem and wrap anywhere. These compact values remain local to technical evidence.
 
-The source also uses compact supporting text between 0.75rem and 0.92rem. At the narrow breakpoint, display becomes 1.85rem, scene titles become 1.5rem and result titles become 1.2rem. Lesson labels become 0.72rem within a three-column step grid; this is a local dense-navigation treatment, not the default body scale.
+Tabular numerals are applied to numbered scenario markers, result counts and timestamps. At 860px and below, endpoint titles become 1rem and state labels become 0.88rem; the fluid display ramp stays in effect.
 
-**The Readable Voice Rule.** Use the sourced Atkinson family for task and explanatory text; reserve monospace for raw technical identifiers.
+**The Readable Voice Rule.** Use Atkinson for interface and explanatory text; reserve monospace for raw technical values.
 
 ## Layout
 
-The header and main content share a centered container (maximum 1224px including side padding). Wide screens use 32px gutters. Spacing is an observed set of practical increments, not a mathematical ratio.
+The implemented shell fills at least 100svh. A left rail uses `clamp(224px, 18vw, 275px)` beside a flexible workspace. There is no centered maximum-width page container. The workspace has a thin status header, scenario content and a bottom technical disclosure in normal flow.
 
-The guided workspace uses a flexible scene beside a broader observation stage (`minmax(260px, 0.82fr) minmax(0, 1.5fr)`, gap 32px). Client and server observations share two equal columns. Technical panels and retention controls use equal columns with a 40px gap. Records use two columns with a 16px gap.
+Desktop content gutters are 2.5rem. The request/reply diagram uses three columns: `minmax(140px, 1fr) minmax(180px, 2.5fr) minmax(140px, 1fr)`, with a minimum height of 270px. Two observed counters sit below it. The action row places explanation on the left and the primary action on the right. The scenario area grows to occupy available space while the technical panel is collapsed.
 
-At maximum 1000px, the workspace gap becomes 22px and its columns change to `minmax(250px, 0.8fr) minmax(0, 1.2fr)`. Observations stack, their divider becomes horizontal, and the stage footer stacks its content. At maximum 700px, page gutters become 18px, the workspace, technical panels and records become single-column, and lesson navigation becomes three columns. Auxiliary header and introduction notes disappear. Long identifiers wrap anywhere; no narrow layout assumes fixed-width identifiers.
+At widths up to 1100px, technical and advanced content stack, the diagram narrows its column minimums, and the primary action moves above explanation at full width. Above 1100px, technical evidence occupies the left column and request tools the right, with a 1.75rem gap; collapsed Advanced tools sits under the tools, expanding across both columns when opened. At 1100px and above, opening the technical panel stops scenario-content growth.
+
+At widths up to 860px, the rail becomes a top band and a labeled native selector replaces the numbered navigation. The brand remains spaced on one line. Gutters become 1.25rem; endpoint icons shrink from 84px to 62px, the diagram minimum height becomes 230px, and its horizontal exchange is preserved. The technical disclosure hides only its Expand/Collapse word while retaining the chevron and accessible expanded state. At widths up to 480px, identifier rows and saved-record definitions stack; diagram columns can shrink to zero minimum, and state pills wrap.
+
+Spacing follows the observed practical increments in the frontmatter. These layout patterns describe the current scenario surface, not a mandatory composition for every future page.
 
 ## Elevation & Depth
 
-There are no box shadows. White surfaces, thin dividers and restrained state washes establish hierarchy. The result symbol's colored tile is a state marker, not a raised object. Focus remains an explicit outline.
+There are no box shadows. Thin boundaries and pale washes separate regions. Keyboard focus uses a 3px cobalt outline with 4px offset. The in-flight outbound arrow has a 1.2s ease-out repeating animation; its midpoint changes the border and applies `drop-shadow(0 2px 3px #ccd4e3)`. Reduced-motion preference removes animation and restores automatic scrolling. Controls have immediate hover changes, with no transition token.
 
-**The Flat Evidence Rule.** Separate observations with borders and quiet surface changes rather than shadows.
+**The Flat Evidence Rule.** Use borders and quiet surface changes to separate observations. The in-flight arrow glow is a temporary activity cue, not surface elevation.
 
 ## Shapes
 
-Controls and takeaways share softly curved corners; fields use tighter corners. Evidence stages have the broadest corners, with clipping at the outer boundary. Technical panels and record cards use intermediate radii. Thin strokes define cards and fields. Circular numbered lesson markers are native to this world; they are meaningful step indicators, not decorative glyphs. Icons are inline outlined SVGs with round caps and joins.
+Small radii define controls, fields, identifiers and evidence rows. Endpoint state labels use pill corners; scenario numbers and the lost-reply marker are circular. The full-width technical disclosure has square corners. No large rounded card contains the observation stage. Outlined SVG icons use round caps and joins, supplemented by CSS request/reply lines and arrowheads. Numbered circles are meaningful navigation markers native to this interface.
 
 ## Components
 
 ### Buttons
 
-Confident sentence-case controls. Standard buttons have a minimum height of 44px, a one-pixel boundary, weight 650 and a 10px internal gap. Primary buttons use cobalt and white; secondary buttons use white and ink; danger buttons use red text and border. The guided action stretches across its scene, with a minimum height of 54px and padding 15px 17px. Text buttons retain an underline and cobalt text.
+Sentence-case actions with explicit labels. Standard buttons have a one-pixel border and minimum height of 44px. Primary buttons use the recorded cobalt/white treatment, minimum height 52px and weight 600. The guided primary action has minimum width `min(242px, 100%)` and 24px SVG; it becomes full width below the technical stacking breakpoint. Secondary controls use white and ink; danger controls retain the base border and use red text. Text buttons are underlined, transparent and unpadded.
 
-Hover changes background and border over 160ms ease-out; standard active controls use the active wash. Disabled buttons have opacity 0.55 and a not-allowed cursor. Focus uses a cobalt outline (3px, offset 4px). Reduced-motion preference removes transitions, animations and smooth scrolling.
+Hover changes backgrounds and borders immediately. Disabled buttons use opacity 0.55 and a not-allowed cursor. All interactive controls inherit the shared keyboard focus outline.
 
 ### Inputs / Fields
 
-White, full-width fields with a stronger one-pixel stroke, minimum height 46px and field-radius corners. Textarea height is vertically resizable. Labels remain visible above fields. Disabled fields use a muted wash and text with full opacity. Carets use cobalt; keyboard focus uses the shared outline.
+Full-width white fields with a one-pixel boundary and minimum height 44px. Labels remain above editable fields; the mobile scenario selector has an adjacent label. Disabled fields use muted text and a pale wash at full opacity. Textareas resize vertically. Copy controls are labeled buttons next to wrapping technical identifiers.
 
 ### Navigation
 
-Tabs use transparent surfaces at rest, a quiet bottom divider, and a pale cobalt selected surface with a short cobalt underline. Tab selection is exposed through `aria-selected`; ArrowLeft/ArrowRight, Home and End move selection and focus. Only the selected tab is in the normal tab sequence, and inactive panels are hidden.
+Six numbered scenario buttons use `aria-current="step"` for the selected item, a pale blue wash and a filled cobalt circle. Navigation changes the URL fragment and closes the technical panel. It does not reset persisted records. Native selection replaces the rail on narrow screens. A focus-visible skip link moves to the next guided action.
 
-Lesson buttons wrap across the available width and mark the current step with `aria-current="step"`, a pale cobalt wash and a filled numbered circle. Narrow layouts use the three-column grid described above. The skip link becomes visible on focus and focuses the next usable action.
+### Evidence Records and State Labels
 
-### Cards / Containers
+Evidence rows have thin borders, compact padding and small corners. HTTP status labels have outlined boundaries and explicit text. Endpoint status pills combine a colored dot with a readable word. Technical attempts scroll within a 230px maximum-height focusable history; saved records remain in document flow. All-record lists use an auto-fitting grid with a 300px minimum, capped by available width.
 
-White technical panels and record cards use quiet one-pixel boundaries with their own radius roles. Technical panels have 24px internal padding, becoming 20px on narrow screens. Record cards use 18px 20px. These containers stay flat.
+### Request / Reply Exchange
 
-### Observation Stage
+Two labeled endpoint SVGs face each other across a solid outgoing line and dashed return line. A circular close SVG interrupts a missing reply. Send and saved-record counts stay separate, with a paper-plane SVG for sends and document SVG for records. The lost-reply summary checks observed records before stating persistence. Missing server evidence remains explicit, and raw POST confirmation is separate from GET observations. Status announcements and focus returned to the next action accompany phase changes.
 
-A shared, clipped stage contains a heading, two labeled observations and a bounded footer. Each result uses an outlined SVG on a colored tile, an outcome heading, explanation and any refreshed records. The labels identify client and server independently of color. State changes announce through status text; completed guided phases return focus to the next action. Verified takeaways use green, while attention takeaways use violet. The stage's paired desktop composition belongs to this comparison pattern, not every future page.
+### Disclosures
+
+The bottom Technical details button is collapsed on initial render, exposes `aria-expanded` and `aria-controls`, and hides its panel with the `hidden` attribute. The action remains above it. Its attempt badge is scoped to the displayed scenario. Expanded evidence groups HTTP activity, observed records, identifiers and request tools. Explanation, request content and Advanced tools use native details/summary elements and begin closed. Advanced manual controls describe their effect on the current request; they are separate from the guided next action. Chevron rotation signals expanded state where an SVG chevron is present.
 
 ## Do's and Don'ts
 
 ### Do:
 
-- **Do** keep a visible focus outline and named keyboard-operable controls.
-- **Do** pair each state color and SVG symbol with readable result text.
-- **Do** let long technical identifiers wrap and comparison panels stack on narrow screens.
-- **Do** preserve self-hosted font assets and their OFL notice.
+- **Do** pair state colors and SVG symbols with explicit text.
+- **Do** preserve the visible focus outline, native disclosures and labeled controls.
+- **Do** allow identifiers to wrap and technical evidence to stack at narrow widths.
+- **Do** retain locally served font assets and their third-party license.
 
 ### Don't:
 
-- **Don't** treat unavailable server evidence as a zero count or a successful result.
-- **Don't** use color or an icon as the only indication of an outcome.
-- **Don't** add decorative elevation to the flat observation surfaces.
+- **Don't** interpret unavailable evidence as zero saved records or a successful operation.
+- **Don't** substitute a lost POST response with an identifier observed separately through GET.
+- **Don't** introduce decorative elevation on the flat evidence surfaces.

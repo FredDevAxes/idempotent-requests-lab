@@ -115,307 +115,270 @@ export function GuidedDemo({
     if (lab.busy) return;
     setLesson(id);
   }
+  const shortStory = lab.busy
+    ? "Sending the request. Waiting for the outcome."
+    : unavailable && active
+      ? "Server evidence is unavailable. Refresh to check the result."
+      : phase === "done" && resultMatches
+        ? lessonId === "new"
+          ? "A new reference creates a separate request."
+          : lessonId === "conflict"
+            ? "Changed content was refused. The original request is unchanged."
+            : lessonId === "lost"
+              ? "The retry recovered the saved request."
+              : "Sending again kept one saved request."
+        : lessonId === "lost"
+          ? !latest
+            ? "Send a request, then lose its reply after saving."
+            : outcome === "unknown" && records.length === 1
+              ? "The request is saved. The reply never arrived."
+              : outcome === "unknown"
+                ? "No reply arrived. No saved request was observed."
+                : "The response differs from this scenario. Inspect the evidence."
+          : lessonId === "parallel"
+            ? "Send the same request twenty times, together."
+            : lessonId === "rollback"
+              ? "Fail before saving, then try again."
+              : lessonId === "conflict"
+                ? "Keep the reference. Change the content."
+                : lessonId === "new"
+                  ? "Same content. A new request reference."
+                  : "Send a pump inspection request. Then send it again.";
+  const replyLabel = lab.busy
+    ? "Waiting for reply…"
+    : outcome === "unknown"
+      ? "Reply lost"
+      : outcome === "conflict"
+        ? "Content refused"
+        : outcome === "retryable"
+          ? "Retry available"
+          : outcome === "accepted"
+            ? "Reply received"
+            : "Reply";
   return (
-    <section role="tabpanel" id="guided-panel" aria-labelledby="guided-tab">
-      <div className="demo-intro">
-        <div>
-          <h1>Try again. Keep one request.</h1>
-          <p>
-            Repeat a send without accidentally creating another job. Follow the
-            request on your screen and on the server.
-          </p>
-        </div>
-        <p className="intro-note">
-          Fictional maintenance requests.
-          <br />
-          Real sends and saved results.
-        </p>
+    <section className="scenario-page" aria-labelledby="scene-title">
+      <div className="scene-heading">
+        <h1 id="scene-title">{lesson.label}</h1>
+        <p className="stage-footer">{shortStory}</p>
       </div>
-      <nav className="lesson-nav" aria-label="Guided experiments">
-        {lessons.map((item, index) => (
-          <button
-            key={item.id}
-            type="button"
-            disabled={lab.busy}
-            aria-current={item.id === lessonId ? "step" : undefined}
-            onClick={() => choose(item.id)}
+      <div className="observation-stage" aria-label="Live observations">
+        <div
+          className="request-flow"
+          data-outcome={lab.busy ? "sending" : (outcome ?? "ready")}
+        >
+          <section
+            className="endpoint client"
+            data-testid="client-observation"
+            aria-label="Your screen"
           >
-            <span className="lesson-index">{index + 1}</span>
-            <span>{item.label}</span>
-            {active?.phase === "done" && item.id === lessonId && (
-              <Icon name="check" />
-            )}
-          </button>
-        ))}
-      </nav>
-      <div className="teaching-workspace">
-        <section className="scene" aria-labelledby="scene-title">
-          <h2 id="scene-title">{lesson.title}</h2>
-          <p className="scene-story">{sceneText}</p>
-          {phase !== "done" ? (
-            <>
-              <button
-                id="guide-action"
-                className="primary guide-action"
-                disabled={cannotRun}
-                onClick={() => void lab.runGuide(lessonId)}
-              >
-                <span>
-                  {lab.busy
-                    ? "Sending…"
-                    : phase === "retry"
-                      ? lesson.retryAction
-                      : lesson.firstAction}
+            <h2>Your screen</h2>
+            <Icon name="screen" className="endpoint-icon" />
+            <span className={`state-label ${outcome ?? "ready"}`}>
+              {lab.busy
+                ? "Waiting…"
+                : !active
+                  ? "Ready"
+                  : outcome === "unknown"
+                    ? "Unconfirmed"
+                    : outcome === "accepted"
+                      ? "Confirmed"
+                      : outcome === "conflict"
+                        ? "Refused"
+                        : "Try again"}
+            </span>
+            <span className="sr-only">
+              {clientTitle}. {clientDetail}
+            </span>
+          </section>
+          <div className="flow-arrows" aria-label="Request and reply">
+            <div className="outbound">
+              <span>
+                {lab.busy ? "Sending…" : latest ? "Request sent" : "Request"}
+              </span>
+            </div>
+            <div className={`inbound ${outcome === "unknown" ? "broken" : ""}`}>
+              {outcome === "unknown" && (
+                <span className="lost-marker">
+                  <Icon name="close" />
                 </span>
-                <Icon name={phase === "retry" ? "retry" : "arrow"} />
-              </button>
-              {lesson.needsDemo && lab.demo === false && (
-                <p className="inline-warning">
-                  This exercise needs local demo mode. Use “Send twice” for a
-                  normal request, or enable local demo mode.
-                </p>
               )}
-              <p className="action-note">
-                {phase === "ready"
-                  ? "Starts a new experiment. Earlier saved requests are kept."
-                  : lessonId === "new"
-                    ? "Creates a new reference for a second job."
-                    : "Uses the same request reference."}
-              </p>
-            </>
-          ) : (
-            <>
-              <div
-                className={`takeaway ${resultMatches ? "confirmed" : "attention"}`}
-              >
-                <Icon name={resultMatches ? "check" : "warning"} />
-                <p>
-                  {resultMatches
-                    ? `${sends} sends, ${records.length} saved ${records.length === 1 ? "request" : "requests"}.`
-                    : unavailable
-                      ? "Server evidence is unavailable."
-                      : "Check the server observations."}
-                </p>
-              </div>
-              {!resultMatches ? (
-                <button
-                  id="guide-action"
-                  className="primary guide-action"
-                  disabled={lab.busy}
-                  onClick={() => void lab.refresh()}
-                >
-                  Refresh server results
-                  <Icon name="retry" />
-                </button>
-              ) : nextIndex < lessons.length ? (
-                <button
-                  id="guide-action"
-                  className="primary guide-action"
-                  disabled={lab.busy}
-                  onClick={() => choose(lessons[nextIndex].id)}
-                >
-                  Next experiment
-                  <Icon name="arrow" />
-                </button>
-              ) : (
-                <button
-                  id="guide-action"
-                  className="primary guide-action"
-                  disabled={lab.busy}
-                  onClick={() => {
-                    choose("repeat");
-                    lab.restartGuide();
-                  }}
-                >
-                  Start a fresh walkthrough
-                  <Icon name="retry" />
-                </button>
-              )}
-              <button
-                className="text-button"
-                disabled={lab.busy}
-                onClick={lab.restartGuide}
-              >
+              <span className="reply-label">{replyLabel}</span>
+            </div>
+          </div>
+          <section
+            className="endpoint server"
+            data-testid="server-observation"
+            aria-label="Server"
+          >
+            <h2>Server</h2>
+            <Icon name="server" className="endpoint-icon" />
+            <span
+              className={`state-label ${!unavailable && records.length ? "accepted" : "ready"}`}
+            >
+              {unavailable
+                ? "Unavailable"
+                : lab.busy
+                  ? "Checking…"
+                  : !active
+                    ? "Not sent"
+                    : records.length
+                      ? "Saved"
+                      : "Nothing saved"}
+            </span>
+            {!unavailable && !lab.busy && records.length > 0 && (
+              <span className="record-caption">
+                Pump inspection
+                {records.length > 1 ? ` × ${records.length}` : ""}
+              </span>
+            )}
+            <span className="sr-only">
+              {unavailable
+                ? "Could not check the server"
+                : !active
+                  ? "No experiment started"
+                  : records.length === 1
+                    ? "One request saved"
+                    : records.length === 0
+                      ? "No saved request observed"
+                      : `${records.length} requests saved`}
+            </span>
+          </section>
+        </div>
+        <div className="result-counts" aria-live="polite">
+          <span>
+            <Icon name="send" />
+            <strong>
+              {sends} {sends === 1 ? "send" : "sends"}
+            </strong>
+          </span>
+          <span>
+            <Icon name="document" />
+            <strong>
+              {unavailable
+                ? "Server not checked"
+                : lab.busy
+                  ? "Checking records…"
+                  : `${records.length} saved ${records.length === 1 ? "request" : "requests"}`}
+            </strong>
+          </span>
+        </div>
+        {phase === "done" && (
+          <p
+            className={`takeaway ${resultMatches ? "sr-only" : "inline-warning"}`}
+          >
+            {resultMatches
+              ? `${sends} sends, ${records.length} saved ${records.length === 1 ? "request" : "requests"}.`
+              : unavailable
+                ? "Server evidence is unavailable."
+                : "Check the server observations before continuing."}
+          </p>
+        )}
+      </div>
+      <div className="scenario-actions">
+        <details className="explanation">
+          <summary>
+            <Icon name="chevron" />
+            Show explanation
+          </summary>
+          <div>
+            <h2>{lesson.title}</h2>
+            <p>{sceneText}</p>
+            <p>
+              Same request means the same reference and content. References are
+              retained for at least 24 hours, until an explicit purge.
+            </p>
+            {phase === "done" && (
+              <button disabled={lab.busy} onClick={lab.restartGuide}>
+                <Icon name="retry" />
                 Repeat this experiment
               </button>
-            </>
-          )}
-          <p role="status" className="guide-status">
-            {lab.notice.includes("storage") ||
-            lab.notice.includes("API unavailable")
-              ? lab.notice
-              : lab.busy
-                ? "Sending real requests to the API."
-                : phase === "ready"
-                  ? "Ready. No send has been made in this experiment."
-                  : outcome === "unknown"
-                    ? "The reply is missing. Check the server before retrying."
-                    : phase === "done" && resultMatches
-                      ? "The result has been checked against the saved server records."
-                      : "Compare the two observations, then take the next action."}
-          </p>
-          {!active && lab.session.locked && (
-            <p className="preserved-note">
-              Your earlier request is preserved in{" "}
-              <button className="text-button" onClick={inspect}>
-                Technical controls
-              </button>
-              . Starting an experiment creates a new reference.
-            </p>
-          )}
-        </section>
-        <section className="observation-stage" aria-label="Live observations">
-          <div className="stage-heading">
-            <h2>Follow this request</h2>
-            <span className={`live-label ${unavailable ? "attention" : ""}`}>
+            )}
+          </div>
+        </details>
+        <div className="primary-action">
+          {phase !== "done" ? (
+            <button
+              id="guide-action"
+              className="primary"
+              disabled={cannotRun}
+              onClick={() => void lab.runGuide(lessonId)}
+            >
               {lab.busy
-                ? "Updating…"
-                : unavailable
-                  ? "Server unavailable"
-                  : "Live API results"}
-            </span>
-          </div>
-          <div className="observations">
-            <section
-              className={`observation client ${outcome === "unknown" ? "uncertain" : ""}`}
-              aria-labelledby="client-title"
-            >
-              <div className="observation-label">
-                <Icon name="screen" />
-                <h3 id="client-title">What you see</h3>
-              </div>
-              <div
-                className="observation-body"
-                data-testid="client-observation"
-              >
-                <div className={`result-symbol ${outcome ?? "ready"}`}>
-                  <Icon
-                    name={
-                      outcome === "accepted"
-                        ? "check"
-                        : outcome === "unknown" || outcome === "conflict"
-                          ? "warning"
-                          : "document"
-                    }
-                  />
-                </div>
-                <h4>{clientTitle}</h4>
-                <p>{clientDetail}</p>
-                {active && (
-                  <p className="observed-count">
-                    {sends} {sends === 1 ? "send" : "sends"} in this experiment
-                  </p>
-                )}
-              </div>
-            </section>
-            <section
-              className="observation server"
-              aria-labelledby="server-title"
-            >
-              <div className="observation-label">
-                <Icon name="server" />
-                <h3 id="server-title">What the server saved</h3>
-              </div>
-              <div
-                className="observation-body"
-                data-testid="server-observation"
-              >
-                {unavailable ? (
-                  <>
-                    <div className="result-symbol unknown">
-                      <Icon name="warning" />
-                    </div>
-                    <h4>Could not check the server</h4>
-                    <p>
-                      Do not assume that nothing was saved. Refresh or inspect
-                      the technical evidence.
-                    </p>
-                  </>
-                ) : !active ? (
-                  <>
-                    <div className="result-symbol ready">
-                      <Icon name="document" />
-                    </div>
-                    <h4>No experiment started</h4>
-                    <p>The server result will appear after your first send.</p>
-                  </>
-                ) : (
-                  <>
-                    <div
-                      className={`result-symbol ${records.length ? "accepted" : "ready"}`}
-                    >
-                      <Icon name={records.length ? "check" : "document"} />
-                    </div>
-                    <h4>
-                      {records.length === 0
-                        ? "No saved request observed"
-                        : records.length === 1
-                          ? "One request saved"
-                          : `${records.length} requests saved`}
-                    </h4>
-                    <p>
-                      Refreshed from the server. Only this experiment is shown.
-                    </p>
-                    <ul className="experiment-records">
-                      {records.map((request, index) => (
-                        <li key={request.id}>
-                          <Icon name="document" />
-                          <div>
-                            <strong>
-                              Inspection request
-                              {records.length > 1 ? ` ${index + 1}` : ""}
-                            </strong>
-                            <span>
-                              {request.priority === "urgent"
-                                ? "Urgent"
-                                : "Routine"}{" "}
-                              · North workshop
-                            </span>
-                            <span className="short-reference">
-                              Reference {request.id.slice(0, 8)}
-                            </span>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </>
-                )}
-              </div>
-            </section>
-          </div>
-          <div className="stage-footer">
-            <p>
-              {active && outcome === "conflict"
-                ? "Changed content was refused. The original job stays saved."
-                : resultMatches && lessonId === "rollback"
-                  ? "The retry saved the job after the failed attempt rolled back."
-                  : resultMatches && lessonId === "new"
-                    ? "New reference, new job. Both requests are saved."
-                    : resultMatches && lessonId === "parallel"
-                      ? "All twenty attempts shared one request reference."
-                      : resultMatches && outcome === "accepted"
-                        ? "The same saved request was returned."
-                        : active && outcome === "unknown"
-                          ? records.length > 0 && !unavailable
-                            ? "A missing reply and a saved request can both be true."
-                            : "A missing reply leaves the result uncertain. Keep the reference."
-                          : "One reference follows one request across attempts."}
-            </p>
-            <button className="text-button" onClick={inspect}>
-              Inspect the evidence
-              <Icon name="code" />
+                ? "Sending…"
+                : phase === "retry"
+                  ? lesson.retryAction
+                  : lesson.firstAction}
+              <Icon name="arrow" />
             </button>
-          </div>
-        </section>
+          ) : !resultMatches ? (
+            <button
+              id="guide-action"
+              className="primary"
+              disabled={lab.busy}
+              onClick={() => void lab.refresh()}
+            >
+              Refresh server results
+              <Icon name="retry" />
+            </button>
+          ) : nextIndex < lessons.length ? (
+            <button
+              id="guide-action"
+              className="primary"
+              disabled={lab.busy}
+              onClick={() => choose(lessons[nextIndex].id)}
+            >
+              Next experiment
+              <Icon name="arrow" />
+            </button>
+          ) : (
+            <button
+              id="guide-action"
+              className="primary"
+              disabled={lab.busy}
+              onClick={() => {
+                choose("repeat");
+                lab.restartGuide();
+              }}
+            >
+              Start a fresh walkthrough
+              <Icon name="retry" />
+            </button>
+          )}
+        </div>
       </div>
-      <section className="boundary-note">
-        <Icon name="document" />
-        <p>
-          <strong>A bounded guarantee.</strong> A retained request reference
-          lets the API replay its result. After an explicit purge, reusing that
-          reference can create another job.
+      <div className="scenario-notices">
+        {lesson.needsDemo && lab.demo === false && (
+          <p className="inline-warning">
+            This scenario needs local demo mode. “Send twice” is available in
+            standard mode.
+          </p>
+        )}
+        <p
+          role="status"
+          className={
+            lab.notice.includes("storage") ||
+            lab.notice.includes("API unavailable")
+              ? "inline-warning"
+              : "sr-only"
+          }
+        >
+          {lab.notice.includes("storage") ||
+          lab.notice.includes("API unavailable")
+            ? lab.notice
+            : lab.busy
+              ? "Sending real requests to the API."
+              : `${clientTitle}. ${unavailable ? "Server evidence unavailable." : "Server records refreshed."}`}
         </p>
-      </section>
+        {!active && lab.session.locked && (
+          <p className="preserved-note">
+            Your earlier request is preserved in{" "}
+            <button className="text-button" onClick={inspect}>
+              Technical details
+            </button>
+            . Starting this scenario creates a new reference.
+          </p>
+        )}
+      </div>
     </section>
   );
 }

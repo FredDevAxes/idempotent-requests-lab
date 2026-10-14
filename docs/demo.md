@@ -1,49 +1,61 @@
 # Reproducible demonstration
 
 Follow README.md setup, then run `LOCAL_DEMO=true pnpm dev`. Use fictional data only.
-Choose Guided demo for the accompanied experiments, or Technical controls for the
-manual form, request ledger and local fault tools.
+Choose a scenario in the left rail, or the scenario selector on narrow screens.
+The bottom **Technical details** panel is collapsed by default.
 Each send reaches the API; the saved-request list comes from PostgreSQL.
 
 ## Present the guided demonstration
 
-Keep **Guided demo** selected. The lesson strip follows a useful teaching sequence,
-and each scene offers one next action. No manual fault configuration is required.
+Follow the numbered scenarios in order, or select one directly. Each page offers
+one next action. **Show explanation** reveals the teaching notes. No manual fault configuration is required.
 The observer stage compares the client's confirmation with actual server records.
 
 | Experiment         | First action              | Next action                 | Verified outcome                                       |
 | ------------------ | ------------------------- | --------------------------- | ------------------------------------------------------ |
 | Send twice         | Send the request          | Send the same request again | 2 sends, 1 saved request, same identifier              |
-| Lose a reply       | Send with a lost reply    | Try the same request again  | Real post-commit response loss, then recovery          |
+| Lost reply         | Send with a lost reply    | Retry same request          | Real post-commit response loss, then recovery          |
 | Send together      | Send 20 attempts together | Review the result           | 20 actual calls, 1 saved request                       |
 | Fail before saving | Try a send that fails     | Retry without the failure   | Zero rows after rollback, then one successful creation |
-| Change the content | Save the routine request  | Try changing it to urgent   | 409 refusal; the original remains routine              |
+| Change content     | Save the routine request  | Try changing it to urgent   | 409 refusal; the original remains routine              |
 | Create another     | Save the first request    | Create a separate request   | 2 keys, 2 records, identical business content          |
 
 Every new experiment gets a unique fictional site reference. Only rows matching that
 reference appear in the guided server observation; previous rows are kept and remain
-visible under Technical controls. Counts and conclusions come from actual API/HTTP
+visible under **Technical details → Advanced tools → All saved requests**. Counts and conclusions come from actual API/HTTP
 activity. If the server cannot be read, the interface says so rather than displaying
 zero or claiming success. Refresh the server evidence or inspect it before continuing.
 
-![A lost confirmation beside a real saved request, with one safe retry action](evidence/guided-lost-desktop.png)
+![A lost confirmation beside a real saved request, with one safe retry action](evidence/workspace-c-expanded.png)
 
 Actual compiled-browser capture after the API socket was destroyed following commit.
 
 ## Reload, repeat and inspect
 
 Reload after the unknown result. The selected experiment, request key, content and
-retry stage are restored. Press Try the same request again to confirm the saved job.
+retry stage are restored. Press Retry same request to confirm the saved job.
 The equivalent HTTP experiment is `pnpm demo:cli`; it adds one fictional request.
 
-Use **Inspect the evidence** to open the Technical controls tab. The current key,
-business identifier and HTTP attempts are preserved when switching between tabs.
-**Repeat this experiment** starts another explicit experiment without deleting rows.
+Open **Technical details** to inspect the current scenario without leaving its page.
+The key and HTTP attempts are preserved when collapsing the panel or reloading.
+A missing POST reply does not confirm an identifier: the separate GET evidence can
+still show the saved record. Copy buttons copy full identifiers.
+
+The panel closes when switching scenarios. If the selected scenario has not started,
+it offers to resume the preserved request rather than showing its evidence under
+the wrong scenario. Only one intention is active: starting another scenario replaces
+it while preserving earlier database rows. URL fragments identify the selected scenario.
+
+Under **Show explanation**, **Repeat this experiment** starts an explicit new run
+without deleting rows.
 An existing v0.1 browser session stays intact until a new experiment is started.
 
 ## Technical controls
 
-The second tab retains the full manual form and every local control. Use **New request**
+Expand **Advanced tools** inside the bottom panel for the manual form and local
+controls. These operate on the current browser request and can change a guided result.
+The fault selector applies only to manual sends; the main action follows its scenario.
+Use **New request**
 to create a new reference and unlock the content. To reproduce a manual conflict,
 send normally, select Change content under the same key, then retry. The demo flips
 priority rather than appending text beyond the input limit.
@@ -62,8 +74,8 @@ separate connection verifies that neither row is visible. A contender is observe
 waiting in pg_stat_activity before its 503 is checked. No fixed sleep alone establishes
 the order of these fault tests.
 
-Captures are from the real compiled app in Chromium: 1440×1100 desktop, 390×844 mobile,
-659×853 (the observed in-app browser), and 640×800 with 200% root text size for reflow. They use isolated test data. UUIDs and
+Captures are from the real compiled app in Chromium: 1440×1024 and 1440×1100 desktop, 390×844 mobile,
+659×853 (the observed in-app browser), and 640×800 with 200% root text size for reflow. The C comparison is also captured at the approved 1536×1024 dimensions. They use isolated test data. UUIDs and
 times naturally differ across runs. See [verification.md](verification.md) for their
 code revision and the recorded results. To regenerate after a code change:
 
@@ -72,11 +84,11 @@ pnpm build
 CAPTURE_DOCS=true pnpm test:browser
 ```
 
-![Mobile guided result and client/server observations stack without horizontal overflow](evidence/guided-mobile.png)
+![Mobile guided result and client/server observations stack without horizontal overflow](evidence/workspace-c-mobile.png)
 
-Mobile capture after a keyboard-only send. The scan includes labels, contrast and landmarks.
+Mobile capture of the expanded technical panel after a real lost response. The scan includes labels, contrast and landmarks.
 
-![Enlarged guided text and observations remain usable in the narrow reflow check](evidence/guided-zoom.png)
+![Enlarged guided text and observations remain usable in the narrow reflow check](evidence/workspace-c-zoom.png)
 
 200% text/reflow check. This is an automated layout surrogate; native browser zoom
 and assistive-technology combinations can behave differently.

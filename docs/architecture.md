@@ -49,7 +49,7 @@ The lost-response hook destroys the real HTTP socket after commit, not a UI mess
 
 ## Guided interface
 
-The frontend separates a guided presentation from technical controls. PRODUCT.md
+The frontend integrates a scenario presentation and a collapsible technical panel. PRODUCT.md
 records the confirmed accompanied-use scenario. DESIGN.md describes the shipped
 visual system; the development-only direction contract is never imported by the app.
 
@@ -62,8 +62,11 @@ a failed read never becomes zero. Two keys represent a separate-request exercise
 
 The original session format remains valid because guide metadata is optional. Starting
 a new experiment is explicit; the initial render does not erase an earlier key or draft.
-The technical tab retains manual inputs, faults, traces, retention and confirmed reset.
-Tab and lesson changes do not cancel or replace an in-flight request.
+The technical panel starts collapsed, closes on scenario navigation, and scopes its
+primary evidence to the active scenario. Its Advanced tools disclosure retains manual
+inputs, faults, HTTP attempts, retention and confirmed reset. Scenario selection uses
+URL fragments. Browsing scenarios preserves the current intention until another
+experiment is explicitly started; navigation controls are disabled during a send.
 
 Atkinson Hyperlegible Next is served locally from a pinned Fontsource package under
 OFL-1.1. The comparison stage uses runtime geometry and authored icon-size SVG paths;

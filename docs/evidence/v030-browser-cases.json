@@ -1,0 +1,247 @@
+{
+  "version": "0.3.0",
+  "browser": "Chromium",
+  "testCount": 24,
+  "cases": [
+    {
+      "title": "normal send, exact retry and a distinct intention",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 983
+        }
+      ]
+    },
+    {
+      "title": "real response loss, reload with preserved key/content and recovery",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 646
+        }
+      ]
+    },
+    {
+      "title": "content conflict is visible without a duplicate",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 408
+        }
+      ]
+    },
+    {
+      "title": "pre-commit failure and recovery leave no partial writes",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 463
+        }
+      ]
+    },
+    {
+      "title": "twenty actual browser sends create one record",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 482
+        }
+      ]
+    },
+    {
+      "title": "mobile and keyboard path, reduced motion, contrast and 200% reflow",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1155
+        }
+      ]
+    },
+    {
+      "title": "explicit reset confirmation and purge controls",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 569
+        }
+      ]
+    },
+    {
+      "title": "storage failure prevents sending an unpreserved intention",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 297
+        }
+      ]
+    },
+    {
+      "title": "reload during an in-flight commit preserves the intent and recovers",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 614
+        }
+      ]
+    },
+    {
+      "title": "first-time view explains the next action and keeps identifiers in the technical panel",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 323
+        }
+      ]
+    },
+    {
+      "title": "guided sequential replay explains two sends and one actual saved request",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 379
+        }
+      ]
+    },
+    {
+      "title": "guided lost response, panel toggle and reload preserve the same reference and recover",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 861
+        }
+      ]
+    },
+    {
+      "title": "guided concurrency uses twenty real sends and one saved record",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 354
+        }
+      ]
+    },
+    {
+      "title": "guided rollback shows no saved record then a successful retry",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 326
+        }
+      ]
+    },
+    {
+      "title": "guided content conflict preserves the original priority",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 357
+        }
+      ]
+    },
+    {
+      "title": "guided new intention uses two keys and creates two genuine requests",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 316
+        }
+      ]
+    },
+    {
+      "title": "guided results exclude earlier experiments without deleting them",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 454
+        }
+      ]
+    },
+    {
+      "title": "server read failure never presents a fabricated zero or success conclusion",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 338
+        }
+      ]
+    },
+    {
+      "title": "existing v0.1 browser intent remains intact until a new experiment is explicitly started",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 403
+        }
+      ]
+    },
+    {
+      "title": "guided keyboard, accessible disclosure, mobile and 200 percent reflow",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1195
+        }
+      ]
+    },
+    {
+      "title": "in-app browser width keeps the guided action and observations readable",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 180
+        }
+      ]
+    },
+    {
+      "title": "scenario navigation scopes the drawer and preserves the unfinished request",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 519
+        }
+      ]
+    },
+    {
+      "title": "version C expanded panel keeps the scenario action visible and copies the real key",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1080
+        }
+      ]
+    },
+    {
+      "title": "lost-reply summary distinguishes the plan from observed and unavailable evidence",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 567
+        }
+      ]
+    }
+  ]
+}

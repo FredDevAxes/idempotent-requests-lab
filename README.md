@@ -9,11 +9,12 @@ This is a **local, limited prototype** using fictional maintenance requests. It
 explores a bounded database guarantee, not universal exactly-once delivery. There
 are no payments, emails, external effects or production deployment.
 
-![Guided demonstration with one next action and separate client and server observations](docs/evidence/guided-ready-desktop.png)
+![Scenario workspace with one next action and a collapsed technical panel](docs/evidence/workspace-c-collapsed.png)
 
 The guided view walks through six experiments, one action at a time. It separates
-what the client knows from what the server actually saved. A second tab contains
-the manual request form, HTTP traces and local fault controls. See the [demo protocol](docs/demo.md) and
+what the client knows from what the server actually saved. Each scenario has one page,
+with a technical panel at the bottom, collapsed by default. Open it for HTTP attempts,
+observed records, identifiers and advanced manual controls. See the [demo protocol](docs/demo.md) and
 [verification record](docs/verification.md) for the examined revision and limitations.
 
 ## What to observe
@@ -80,21 +81,22 @@ LOCAL_DEMO=true pnpm dev
 Open **http://127.0.0.1:5173**. The API listens on 127.0.0.1:3100. To watch the
 response-loss experiment:
 
-1. The **Guided demo** starts with **Send twice**. Click **Send the request**.
+1. The page starts with **Send twice**. Click **Send the request**.
    Compare the confirmation on the client with the one saved job on the server.
 2. Click **Send the same request again**. The result reads **2 sends, 1 saved request**.
-3. Click **Next experiment** to explore **Lose a reply**, then **Send with a lost reply**.
+3. Click **Next experiment** to explore **Lost reply**, then **Send with a lost reply**.
    The client has no confirmation, while the server observation shows the saved job.
 4. Reload if you want to test persistence. This same experiment and its reference return.
-5. Click **Try the same request again**. The API returns the existing record.
+5. Click **Retry same request**. The API returns the existing record.
 
 Each experiment creates a unique fictional run reference, so earlier database rows do
 not affect its displayed result. Starting or repeating an experiment keeps earlier
 saved rows. The next action advances only from observed responses and saved evidence;
 unavailable server data is shown as unavailable, never as a fabricated zero.
 
-**Technical controls** exposes the full keys, HTTP attempts, manual form, fault
-selector, retention clock, purge and explicit reset. The manual fault selector
+**Technical details** expands beneath the scenario. It shows full keys, actual HTTP
+attempts and records read from the server. **Advanced tools** contains the manual form,
+fault selector, retention clock, purge and explicit reset. The manual fault selector
 returns to Normal delivery after a page reload; the guided experiment retains its
 own stage and selects the safe retry automatically. The optional command
 below runs the same HTTP-level experiment against the already running API:
@@ -107,7 +109,7 @@ It prints observed identifiers and fails if the lost response did not leave a
 persisted success. It adds one fictional request and keeps its key for the retry.
 The [full protocol](docs/demo.md) also covers rollback, concurrency, conflicts and purge.
 
-In Technical controls, use **New request** to unlock the form and create another
+In **Technical details → Advanced tools**, use **New request** to unlock the form and create another
 request. **Reset lab data**
 requires confirmation and removes only rows in the isolated lab schema. Advancing
 the demo clock does not purge automatically; use **Purge eligible keys** separately.

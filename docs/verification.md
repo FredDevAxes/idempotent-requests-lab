@@ -1,6 +1,46 @@
 # Verification record
 
-## Guided interface milestone
+## Scenario workspace C — v0.3.0
+
+The approved C interface replaces the two top-level tabs with one page per scenario.
+A bottom technical panel starts collapsed, closes on scenario navigation and reveals
+HTTP attempts, independent server observations and advanced manual tools in place.
+The API and persistence contract are unchanged. No user-demo rows were deleted for tests.
+
+The complete `pnpm check` passed locally on 15 October 2026: formatting, build, TypeScript, ESLint, 2 unit tests,
+15 PostgreSQL/HTTP tests and 24 Chromium browser cases, all passing with none skipped.
+The browser cases include all six guided scenarios, the existing nine manual journeys,
+legacy session recovery, keyboard/axe checks, 200% text reflow, scenario-scoped evidence,
+collapsed defaults, actual identifier copy, and truthful lost-reply summaries before
+sending and after a failed server read. See [browser cases](evidence/v030-browser-cases.json).
+
+Current screenshots use the `workspace-c-` prefix under `docs/evidence/`. They are
+compiled-app captures, with provenance embedded, at 1536×1024 (approved reference size),
+1440×1024, 390×844, 659×853 and 640×800 with enlarged text. UUIDs and timestamps are real
+fictional test records. Older screenshots and verification sections belong to earlier
+milestones, whose immutable tags preserve their original context.
+
+The independent design review requested a stronger primary action, the approved send
+symbol, observation-aware lost-reply copy, mobile brand spacing and updated design
+records. Corrections and their verdict are recorded in the C review evidence. The hero
+comparison gate passed. The responsive image-comparison gate remains mechanically open:
+its normalized crops call the diagram and HTTP activity missing at 1440px, although the
+reviewer confirmed both are present and readable in the capture and paired crops.
+No forced pass was recorded. This is a documented image-comparison limitation, not a
+claim of exact pixel fidelity. Automated browser overflow and accessibility checks pass.
+
+The source milestone is the immutable `v0.3.0` tag. Resolve its exact code revision
+with `git rev-list -n 1 v0.3.0` and match it in the public main-branch CI runs.
+The final check output is [recorded here](evidence/v030-local-check.txt); the focused
+design verdict is [recorded here](../.impeccable/review/workspace-c-verdict.json).
+
+The new UI has not been reproduced in a separate fresh clone; the v0.2.0 clean-clone
+run below remains historical. Chromium is the automated target. Other engines, native
+browser zoom and full assistive-technology certification remain unverified. One browser
+intention is active at a time; browsing scenarios preserves it, starting a new experiment
+explicitly replaces it while keeping earlier database records.
+
+## Guided interface milestone (historical v0.2.0)
 
 The v0.2.0 interface adds an accompanied, six-experiment presentation and a separate
 technical-controls tab. The API transaction and retention contract are unchanged.

@@ -49,12 +49,13 @@ test.beforeEach(async ({ page, request }) => {
   ).toBeEnabled();
 });
 test.afterAll(async () => pool.end());
-test("first-time view explains the next action and keeps identifiers in the technical tab", async ({
+test("first-time view explains the next action and keeps identifiers in the technical panel", async ({
   page,
 }) => {
-  await expect(page.getByRole("tab", { name: "Guided demo" })).toHaveAttribute(
-    "aria-selected",
-    "true",
+  await expect(page.getByRole("tab")).toHaveCount(0);
+  await expect(page.locator("#technical-toggle")).toHaveAttribute(
+    "aria-expanded",
+    "false",
   );
   await expect(page.getByTestId("server-observation")).toContainText(
     "No experiment started",
@@ -63,22 +64,24 @@ test("first-time view explains the next action and keeps identifiers in the tech
   await page.evaluate(async () => {
     await document.fonts.ready;
   });
-  await expect(
-    page.getByRole("heading", { name: "Try again. Keep one request." }),
-  ).toHaveCSS("font-family", /Atkinson Hyperlegible Next Variable/);
+  await expect(page.getByRole("heading", { name: "Send twice" })).toHaveCSS(
+    "font-family",
+    /Atkinson Hyperlegible Next Variable/,
+  );
   expect(
     await page.evaluate(() =>
       document.fonts.check('16px "Atkinson Hyperlegible Next Variable"'),
     ),
   ).toBe(true);
   await shot(page, "guided-ready-desktop");
-  await page
-    .getByRole("tab", { name: "Technical controls", exact: true })
-    .click();
+  await page.locator("#technical-toggle").click();
   await expect(page.getByTestId("intention-key")).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "Local fault controls" }),
+    page.getByRole("heading", { name: "HTTP activity" }),
   ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Local fault controls" }),
+  ).toBeHidden();
   await counts(0, 0);
 });
 test("guided sequential replay explains two sends and one actual saved request", async ({
@@ -109,10 +112,10 @@ test("guided sequential replay explains two sends and one actual saved request",
   );
   await shot(page, "guided-repeat-desktop");
 });
-test("guided lost response, tab switch and reload preserve the same reference and recover", async ({
+test("guided lost response, panel toggle and reload preserve the same reference and recover", async ({
   page,
 }) => {
-  await lesson(page, "Lose a reply");
+  await lesson(page, "Lost reply");
   await page.getByRole("button", { name: "Send with a lost reply" }).click();
   await expect(page.getByTestId("client-observation")).toContainText(
     "No confirmation received",
@@ -124,23 +127,21 @@ test("guided lost response, tab switch and reload preserve the same reference an
   await shot(page, "guided-lost-desktop");
   const saved = (await pool.query("SELECT response FROM idempotency_keys"))
     .rows[0].response;
-  await page.getByRole("button", { name: "Inspect the evidence" }).click();
+  await page.locator("#technical-toggle").click();
   const key = await page.getByTestId("intention-key").textContent();
-  await page.getByRole("tab", { name: "Guided demo" }).click();
+  await page.locator("#technical-toggle").click();
   await page.reload();
   await expect(
-    page.getByRole("button", { name: "Try the same request again" }),
+    page.getByRole("button", { name: "Retry same request" }),
   ).toBeEnabled();
   await expect(page.getByTestId("client-observation")).toContainText(
     "No confirmation received",
   );
-  await page
-    .getByRole("button", { name: "Try the same request again" })
-    .click();
+  await page.getByRole("button", { name: "Retry same request" }).click();
   await expect(page.locator(".takeaway")).toContainText(
     "2 sends, 1 saved request",
   );
-  await page.getByRole("button", { name: "Inspect the evidence" }).click();
+  await page.locator("#technical-toggle").click();
   await expect(page.getByTestId("intention-key")).toHaveText(key);
   await expect(page.getByTestId("business-id")).toHaveText(saved.request.id);
   await counts(1, 1);
@@ -154,7 +155,7 @@ test("guided concurrency uses twenty real sends and one saved record", async ({
     "20 sends, 1 saved request",
   );
   await counts(1, 1);
-  await page.getByRole("button", { name: "Inspect the evidence" }).click();
+  await page.locator("#technical-toggle").click();
   await expect(page.locator(".timeline li")).toHaveCount(20);
 });
 test("guided rollback shows no saved record then a successful retry", async ({
@@ -175,7 +176,7 @@ test("guided rollback shows no saved record then a successful retry", async ({
 test("guided content conflict preserves the original priority", async ({
   page,
 }) => {
-  await lesson(page, "Change the content");
+  await lesson(page, "Change content");
   await page.getByRole("button", { name: "Save the routine request" }).click();
   await page.getByRole("button", { name: "Try changing it to urgent" }).click();
   await expect(page.getByTestId("client-observation")).toContainText(
@@ -217,6 +218,7 @@ test("guided results exclude earlier experiments without deleting them", async (
   await page
     .getByRole("button", { name: "Send the same request again" })
     .click();
+  await page.locator(".explanation > summary").click();
   await page.getByRole("button", { name: "Repeat this experiment" }).click();
   await page
     .getByRole("button", { name: "Send the request", exact: true })
@@ -280,19 +282,21 @@ test("existing v0.1 browser intent remains intact until a new experiment is expl
   await expect(
     page.getByText("Your earlier request is preserved in", { exact: false }),
   ).toBeVisible();
-  await page
-    .getByRole("tab", { name: "Technical controls", exact: true })
-    .click();
+  await page.locator("#technical-toggle").click();
   await expect(page.getByTestId("intention-key")).toHaveText(key);
+  await page.locator(".advanced-tools > summary").click();
   await expect(page.getByLabel("Site", { exact: true })).toHaveValue(
     "Existing fictional workshop",
   );
   await counts(0, 0);
 });
-test("guided keyboard, accessible tabs, mobile and 200 percent reflow", async ({
+test("guided keyboard, accessible disclosure, mobile and 200 percent reflow", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.locator(".brand")).toHaveAccessibleName(
+    "Idempotent requests lab",
+  );
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.reload();
   await page.keyboard.press("Tab");
@@ -324,11 +328,13 @@ test("guided keyboard, accessible tabs, mobile and 200 percent reflow", async ({
     ).violations,
   ).toEqual([]);
   await shot(page, "guided-mobile");
-  await page.getByRole("tab", { name: "Guided demo" }).click();
-  await page.keyboard.press("ArrowRight");
-  await expect(
-    page.getByRole("tab", { name: "Technical controls", exact: true }),
-  ).toBeFocused();
+  await page.locator("#technical-toggle").focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("#technical-toggle")).toBeFocused();
+  await expect(page.locator("#technical-toggle")).toHaveAttribute(
+    "aria-expanded",
+    "true",
+  );
   await expect(page.getByTestId("intention-key")).toBeVisible();
   expect(
     (
@@ -337,7 +343,7 @@ test("guided keyboard, accessible tabs, mobile and 200 percent reflow", async ({
         .analyze()
     ).violations,
   ).toEqual([]);
-  await page.keyboard.press("ArrowLeft");
+  await page.locator("#technical-toggle").press("Enter");
   await page.setViewportSize({ width: 640, height: 800 });
   await page.evaluate(() => (document.documentElement.style.fontSize = "32px"));
   expect(
@@ -358,4 +364,137 @@ test("in-app browser width keeps the guided action and observations readable", a
     ),
   ).toBe(true);
   await shot(page, "guided-inapp");
+});
+
+test("scenario navigation scopes the drawer and preserves the unfinished request", async ({
+  page,
+}) => {
+  await lesson(page, "Lost reply");
+  await page.getByRole("button", { name: "Send with a lost reply" }).click();
+  await expect(page.locator(".state-label.unknown")).toHaveText("Unconfirmed");
+  await page.locator("#technical-toggle").click();
+  const key = await page.getByTestId("intention-key").textContent();
+  await expect(page.locator(".http-outcome")).toHaveText("No response");
+  await expect(page.getByTestId("business-id")).toHaveText("Not confirmed yet");
+  await expect(page.locator(".scoped-records li")).toHaveCount(1);
+  await expect(page.locator(".scoped-records")).toContainText(
+    (await pool.query("SELECT id FROM interventions")).rows[0].id,
+  );
+  await lesson(page, "Send together");
+  await expect(page.locator("#technical-toggle")).toHaveAttribute(
+    "aria-expanded",
+    "false",
+  );
+  await page.locator("#technical-toggle").click();
+  await expect(
+    page.getByText("No attempts in this scenario yet."),
+  ).toBeVisible();
+  await expect(page.locator(".timeline li")).toHaveCount(0);
+  await page.getByRole("button", { name: "Resume Lost reply" }).click();
+  await expect(
+    page.getByRole("button", { name: "Retry same request" }),
+  ).toBeEnabled();
+  await page.reload();
+  await expect(page.locator("#technical-toggle")).toHaveAttribute(
+    "aria-expanded",
+    "false",
+  );
+  await page.locator("#technical-toggle").click();
+  await expect(page.getByTestId("intention-key")).toHaveText(key);
+  await counts(1, 1);
+});
+
+test("version C expanded panel keeps the scenario action visible and copies the real key", async ({
+  page,
+  context,
+}) => {
+  await page.setViewportSize({ width: 1536, height: 1024 });
+  await lesson(page, "Lost reply");
+  await page.getByRole("button", { name: "Send with a lost reply" }).click();
+  await expect(page.locator(".state-label.unknown")).toHaveText("Unconfirmed");
+  await page.locator("#technical-toggle").click();
+  await expect(
+    page.getByRole("button", { name: "Retry same request" }),
+  ).toBeInViewport();
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  const key = await page.getByTestId("intention-key").textContent();
+  await page.getByRole("button", { name: "Copy idempotency key" }).click();
+  await expect(page.getByText("Idempotency key copied.")).toBeVisible();
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(key);
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+    window.scrollTo(0, 0);
+  });
+  await mkdir(".impeccable/review", { recursive: true });
+  await page.screenshot({ path: ".impeccable/review/hero-repro.png" });
+  await page.setViewportSize({ width: 1440, height: 1024 });
+  await page.screenshot({
+    path: ".impeccable/review/desktop.png",
+    fullPage: true,
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.locator(".brand")).toHaveAccessibleName(
+    "Idempotent requests lab",
+  );
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  await page.screenshot({
+    path: ".impeccable/review/mobile.png",
+    fullPage: true,
+  });
+  await page.setViewportSize({ width: 659, height: 853 });
+  await page.screenshot({
+    path: ".impeccable/review/user-659.png",
+    fullPage: true,
+  });
+  await page.locator("#technical-toggle").click();
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.screenshot({
+    path: ".impeccable/review/user-659-collapsed.png",
+    fullPage: true,
+  });
+  await page.setViewportSize({ width: 1440, height: 1024 });
+  await page.screenshot({
+    path: ".impeccable/review/desktop-collapsed.png",
+    fullPage: true,
+  });
+});
+
+test("lost-reply summary distinguishes the plan from observed and unavailable evidence", async ({
+  page,
+}) => {
+  await lesson(page, "Lost reply");
+  await expect(page.locator(".stage-footer")).toHaveText(
+    "Send a request, then lose its reply after saving.",
+  );
+  await expect(page.locator(".stage-footer")).not.toContainText(
+    "The request is saved",
+  );
+  await shot(page, "workspace-c-lost-ready");
+  await page.getByRole("button", { name: "Send with a lost reply" }).click();
+  await expect(page.locator(".stage-footer")).toHaveText(
+    "The request is saved. The reply never arrived.",
+  );
+  await page.locator("#technical-toggle").click();
+  await page.route("**/api/interventions", (route) =>
+    route.request().method() === "GET"
+      ? route.fulfill({
+          status: 503,
+          contentType: "application/json",
+          body: "{}",
+        })
+      : route.continue(),
+  );
+  await page
+    .getByRole("button", { name: "Refresh records", exact: true })
+    .click();
+  await expect(page.locator(".stage-footer")).toHaveText(
+    "Server evidence is unavailable. Refresh to check the result.",
+  );
+  await expect(page.locator(".result-counts")).not.toContainText("0 saved");
+  await shot(page, "workspace-c-server-unavailable");
+  await counts(1, 1);
 });
