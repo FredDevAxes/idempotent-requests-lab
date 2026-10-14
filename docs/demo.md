@@ -1,7 +1,8 @@
 # Reproducible demonstration
 
 Follow README.md setup, then run `LOCAL_DEMO=true pnpm dev`. Use fictional data only.
-The two visible areas separate the user's form/ledger from local technical controls.
+Choose Guided demo for the accompanied experiments, or Technical controls for the
+manual form, request ledger and local fault tools.
 Each send reaches the API; the saved-request list comes from PostgreSQL.
 
 ## Present the guided demonstration
