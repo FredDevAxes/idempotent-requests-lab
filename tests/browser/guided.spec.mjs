@@ -104,7 +104,7 @@ test("guided sequential replay explains two sends and one actual saved request",
     "2 sends, 1 saved request",
   );
   await expect(
-    page.getByRole("button", { name: "Next experiment" }),
+    page.getByRole("button", { name: "Restart scenario" }),
   ).toBeFocused();
   await counts(1, 1);
   expect((await pool.query("SELECT id FROM interventions")).rows[0].id).toBe(
@@ -218,8 +218,7 @@ test("guided results exclude earlier experiments without deleting them", async (
   await page
     .getByRole("button", { name: "Send the same request again" })
     .click();
-  await page.locator(".explanation > summary").click();
-  await page.getByRole("button", { name: "Repeat this experiment" }).click();
+  await page.getByRole("button", { name: "Restart scenario" }).click();
   await page
     .getByRole("button", { name: "Send the request", exact: true })
     .click();
@@ -390,7 +389,7 @@ test("scenario navigation scopes the drawer and preserves the unfinished request
     page.getByText("No attempts in this scenario yet."),
   ).toBeVisible();
   await expect(page.locator(".timeline li")).toHaveCount(0);
-  await page.getByRole("button", { name: "Resume Lost reply" }).click();
+  await lesson(page, "Lost reply");
   await expect(
     page.getByRole("button", { name: "Retry same request" }),
   ).toBeEnabled();
@@ -496,5 +495,248 @@ test("lost-reply summary distinguishes the plan from observed and unavailable ev
   );
   await expect(page.locator(".result-counts")).not.toContainText("0 saved");
   await shot(page, "workspace-c-server-unavailable");
+  await counts(1, 1);
+});
+
+for (const scenario of [
+  {
+    id: "repeat",
+    label: "Send twice",
+    first: "Send the request",
+    retry: "Send the same request again",
+    records: 1,
+    outcome: "accepted",
+  },
+  {
+    id: "lost",
+    label: "Lost reply",
+    first: "Send with a lost reply",
+    retry: "Retry same request",
+    records: 1,
+    outcome: "unknown",
+  },
+  {
+    id: "parallel",
+    label: "Send together",
+    first: "Send 20 attempts together",
+    records: 1,
+    outcome: "accepted",
+  },
+  {
+    id: "rollback",
+    label: "Fail before saving",
+    first: "Try a send that fails",
+    retry: "Retry without the failure",
+    records: 1,
+    outcome: "retryable",
+  },
+  {
+    id: "conflict",
+    label: "Change content",
+    first: "Save the routine request",
+    retry: "Try changing it to urgent",
+    records: 1,
+    outcome: "accepted",
+  },
+  {
+    id: "new",
+    label: "Create another",
+    first: "Save the first request",
+    retry: "Create a separate request",
+    records: 2,
+    outcome: "accepted",
+  },
+]) {
+  test(`${scenario.id}: completion and restart stay in the selected scenario and keep server records`, async ({
+    page,
+  }) => {
+    let posts = 0;
+    page.on("request", (request) => {
+      if (
+        request.method() === "POST" &&
+        request.url().endsWith("/api/interventions")
+      )
+        posts++;
+    });
+    await lesson(page, scenario.label);
+    const intro = await page.locator(".scenario-intro").textContent();
+    await expect(page.getByText("Local demo", { exact: true })).toHaveCount(0);
+    await expect(
+      page.getByText("Show explanation", { exact: true }),
+    ).toHaveCount(0);
+    await page
+      .getByRole("button", { name: scenario.first, exact: true })
+      .click();
+    await expect(page.locator(".exchange-motion")).toHaveAttribute(
+      "data-result",
+      scenario.outcome,
+    );
+    await expect(
+      page.locator(`.reply-packets.${scenario.outcome}`),
+    ).toHaveCount(1);
+    await expect(page.locator(".request-packets .packet-travel")).toHaveCount(
+      scenario.id === "parallel" ? 3 : 1,
+    );
+    if (scenario.retry)
+      await page
+        .getByRole("button", { name: scenario.retry, exact: true })
+        .click();
+    await expect(
+      page.getByRole("button", { name: "Restart scenario" }),
+    ).toBeEnabled();
+    await expect(page.locator(".scenario-intro")).toHaveText(intro);
+    await expect(page).toHaveURL(new RegExp(`#${scenario.id}$`));
+    if (scenario.id === "conflict")
+      await expect(page.locator(".reply-packets.conflict")).toHaveCount(1);
+    await counts(scenario.records, scenario.records);
+    const completedPosts = posts;
+    await page.getByRole("button", { name: "Restart scenario" }).click();
+    await expect(
+      page.getByRole("button", { name: scenario.first, exact: true }),
+    ).toBeEnabled();
+    await expect(page.locator(".exchange-motion")).toHaveCount(0);
+    await page.reload();
+    await expect(
+      page.getByRole("button", { name: scenario.first, exact: true }),
+    ).toBeEnabled();
+    await expect(
+      page.getByRole("heading", { name: scenario.label, exact: true }),
+    ).toBeVisible();
+    await expect(page).toHaveURL(new RegExp(`#${scenario.id}$`));
+    await expect(page.locator(".lesson-nav [aria-current=step]")).toContainText(
+      scenario.label,
+    );
+    expect(posts).toBe(completedPosts);
+    await counts(scenario.records, scenario.records);
+  });
+}
+
+test("exchange motion waits for an actual reply, ends, and does not replay on navigation or technical controls", async ({
+  page,
+}) => {
+  let release;
+  const gate = new Promise((resolve) => {
+    release = resolve;
+  });
+  await page.route("**/api/interventions", async (route) => {
+    if (route.request().method() === "POST") await gate;
+    await route.continue();
+  });
+  await page
+    .getByRole("button", { name: "Send the request", exact: true })
+    .click();
+  try {
+    await expect(page.locator(".exchange-motion")).toHaveAttribute(
+      "data-result",
+      "pending",
+    );
+    await expect(page.locator(".reply-packets")).toHaveCount(0);
+    await expect(page.locator(".request-packets .packet-travel")).toHaveCSS(
+      "animation-name",
+      "request-travel",
+    );
+    await expect(page.locator(".request-packets .packet-travel")).toHaveCSS(
+      "animation-iteration-count",
+      "1",
+    );
+    await expect(page.getByTestId("client-observation")).toContainText(
+      "Waiting",
+    );
+  } finally {
+    release();
+  }
+  await expect(page.locator(".exchange-motion")).toHaveAttribute(
+    "data-result",
+    "accepted",
+  );
+  await expect(page.locator(".reply-packets .packet-travel")).toHaveCSS(
+    "animation-name",
+    "reply-travel",
+  );
+  await page.waitForFunction(() =>
+    document
+      .getAnimations()
+      .every((animation) => animation.playState === "finished"),
+  );
+  await page.locator("#technical-toggle").click();
+  await page.locator(".advanced-tools > summary").click();
+  await page
+    .getByRole("button", { name: "Advance clock by 25 hours", exact: true })
+    .click();
+  await expect(page.getByTestId("client-observation")).not.toContainText(
+    "Waiting",
+  );
+  expect(
+    await page.evaluate(
+      () =>
+        document
+          .getAnimations()
+          .filter((animation) => animation.playState === "running").length,
+    ),
+  ).toBe(0);
+  await lesson(page, "Lost reply");
+  await lesson(page, "Send twice");
+  await expect(page.locator(".exchange-motion")).toHaveCount(0);
+  await page.reload();
+  await expect(
+    page.getByRole("button", { name: "Send the same request again" }),
+  ).toBeEnabled();
+  await expect(page.locator(".exchange-motion")).toHaveCount(0);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page
+    .getByRole("button", { name: "Send the same request again" })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Restart scenario" }),
+  ).toBeEnabled();
+  await expect(page.locator(".exchange-motion")).toBeHidden();
+  expect(
+    await page.evaluate(
+      () =>
+        document
+          .getAnimations()
+          .filter((animation) => animation.playState === "running").length,
+    ),
+  ).toBe(0);
+  await counts(1, 1);
+});
+
+test("reply animation and client confirmation do not wait for independent server evidence", async ({
+  page,
+}) => {
+  let release;
+  const gate = new Promise((resolve) => {
+    release = resolve;
+  });
+  let posted = false;
+  await page.route("**/api/interventions", async (route) => {
+    if (route.request().method() === "POST") posted = true;
+    else if (posted) await gate;
+    await route.continue();
+  });
+  await page
+    .getByRole("button", { name: "Send the request", exact: true })
+    .click();
+  try {
+    await expect(page.locator(".exchange-motion")).toHaveAttribute(
+      "data-result",
+      "accepted",
+    );
+    await expect(page.getByTestId("client-observation")).toContainText(
+      "Confirmation received",
+    );
+    await expect(page.getByTestId("server-observation")).toContainText(
+      "Checking…",
+    );
+    await expect(page.locator(".result-counts")).toContainText(
+      "Checking records…",
+    );
+    await expect(page.locator(".result-counts")).not.toContainText("0 saved");
+  } finally {
+    release();
+  }
+  await expect(
+    page.getByRole("button", { name: "Send the same request again" }),
+  ).toBeEnabled();
   await counts(1, 1);
 });

@@ -227,22 +227,6 @@ pre {
   border-bottom: 1px solid var(--line);
   color: var(--muted);
 }
-.connection {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  white-space: nowrap;
-}
-.connection::before {
-  content: "";
-  width: 0.6rem;
-  height: 0.6rem;
-  border-radius: 50%;
-  background: var(--muted);
-}
-.connection.connected::before {
-  background: var(--green);
-}
 .scenario-page {
   display: flex;
   flex-direction: column;
@@ -327,6 +311,7 @@ pre {
   color: #354a70;
 }
 .flow-arrows {
+  position: relative;
   align-self: center;
   padding-bottom: 0.5rem;
   color: #354a70;
@@ -390,13 +375,96 @@ pre {
 [data-outcome="ready"] .flow-arrows {
   color: #566988;
 }
-[data-outcome="sending"] .outbound {
-  animation: sending 1.2s ease-out infinite;
+/* Finite packets illustrate actual POST exchanges. Controls and reads do not animate. */
+.exchange-motion {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
 }
-@keyframes sending {
-  50% {
-    border-color: #2455db;
-    filter: drop-shadow(0 2px 3px #ccd4e3);
+.packet-lane {
+  position: absolute;
+  left: 0;
+  right: 12px;
+  top: -6px;
+}
+.reply-packets {
+  top: 44px;
+}
+.packet-travel {
+  width: 100%;
+  opacity: 0;
+  animation: request-travel 700ms cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+.packet-travel i {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px white;
+}
+.request-packets .packet-travel {
+  position: absolute;
+  top: 0;
+}
+.reply-packets .packet-travel {
+  animation-name: reply-travel;
+}
+.reply-packets.accepted i {
+  background: var(--green);
+}
+.reply-packets.conflict i,
+.reply-packets.retryable i,
+.reply-packets.invalid i {
+  background: var(--danger);
+}
+.reply-packets.unknown i {
+  background: var(--purple);
+}
+.reply-packets.unknown .packet-travel {
+  animation-name: lost-reply-travel;
+}
+@keyframes request-travel {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  10%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+@keyframes reply-travel {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  10%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+}
+@keyframes lost-reply-travel {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  10%,
+  65% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(50%);
+    opacity: 0;
   }
 }
 .result-counts {
@@ -443,7 +511,6 @@ summary {
   align-content: center;
   color: #354a70;
 }
-.explanation summary,
 .advanced-tools > summary {
   list-style: none;
   display: flex;
@@ -456,13 +523,11 @@ summary::-webkit-details-marker {
 details[open] > summary > svg {
   transform: rotate(180deg);
 }
-.explanation > div {
-  max-width: 65ch;
-  padding: 1rem 0;
-}
-.explanation p {
-  margin: 0.7rem 0;
+.stage-footer {
+  align-self: center;
   color: var(--muted);
+  max-width: 52ch;
+  margin: 0;
 }
 .scenario-notices:has(.inline-warning),
 .scenario-notices:has(.preserved-note) {
@@ -802,7 +867,6 @@ textarea {
     gap: 0.5rem;
   }
   .primary-action {
-    grid-row: 1;
     justify-content: stretch;
   }
   .primary-action button {
@@ -968,6 +1032,9 @@ textarea {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .exchange-motion {
+    display: none;
+  }
   *,
   *::before,
   *::after {

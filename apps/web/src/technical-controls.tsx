@@ -46,11 +46,9 @@ function CopyValue({
 export function TechnicalControls({
   lab,
   lessonId,
-  resume,
 }: {
   lab: Lab;
   lessonId: LessonId;
-  resume: () => void;
 }) {
   const [scenario, setScenario] = useState<Scenario>("normal");
   const matching = !lab.session.guide || lab.session.guide.lesson === lessonId;
@@ -71,12 +69,10 @@ export function TechnicalControls({
       {!matching ? (
         <div className="other-scenario">
           <p>No attempts in this scenario yet.</p>
-          <button onClick={resume}>
-            Resume {lessonFor(lab.session.guide!.lesson).label}
-          </button>
           <p className="muted">
-            The previous request is preserved. Start this scenario with the main
-            action above.
+            Your request in “{lessonFor(lab.session.guide!.lesson).label}” is
+            preserved. Select that scenario in the navigation to resume it, or
+            use the main action above to start this one.
           </p>
         </div>
       ) : (

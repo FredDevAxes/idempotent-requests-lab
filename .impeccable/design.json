@@ -405,16 +405,16 @@
     },
     "shadows": [
       {
-        "name": "in-flight-arrow",
-        "value": "drop-shadow(0 2px 3px #ccd4e3)",
-        "purpose": "CSS filter at the sending animation midpoint only; no box-shadow surface elevation."
+        "name": "packet-outline",
+        "value": "0 0 0 3px white",
+        "purpose": "Contrast around moving packet dots; no surface elevation."
       }
     ],
     "motion": [
       {
-        "name": "sending",
-        "value": "sending 1.2s ease-out infinite",
-        "purpose": "Outbound request activity; disabled for reduced motion."
+        "name": "request-travel / reply-travel / lost-reply-travel",
+        "value": "700ms cubic-bezier(0.25, 0.1, 0.25, 1) both; one iteration",
+        "purpose": "Actual-send illustration, return gated on POST outcome; three staggered dots for parallel sends; disabled for reduced motion. Not measured network timing."
       }
     ],
     "breakpoints": [

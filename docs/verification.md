@@ -1,5 +1,35 @@
 # Verification record
 
+## Manual navigation and exchange motion — v0.3.1
+
+Scenario changes now happen only through the scenario rail (or its narrow-screen
+selector). Completion offers **Restart scenario**, preserving the selected URL and
+all existing server rows; restarting sends nothing until the next explicit action.
+The scenario introduction is always visible under its title. The explanation disclosure
+and top-right mode label have been removed. The technical panel remains collapsed by default.
+
+Actual POST activity triggers finite request/reply illustrations. Return motion is gated
+on the observed POST outcome, independently of the GET used to verify saved rows.
+Unknown replies stop halfway; concurrent sends use three representative dots, with twenty
+real attempts counted separately. No animation claims measured latency or individual
+network packets. Reduced-motion users retain static state feedback. Technical controls,
+reloads and navigating back to a scenario do not replay previous exchanges.
+
+On 15 October 2026, `pnpm check` passed: formatting, ESLint, build, TypeScript,
+2 unit tests, 15 PostgreSQL/HTTP tests and 32 Chromium browser cases (49 total).
+Eight new cases cover restart and preserved data across all six scenarios, pending
+replies, bounded animation, control/navigation/reload suppression, reduced motion,
+and client confirmation while independent GET evidence is still pending.
+See [local output](evidence/v031-local-check.txt) and [browser cases](evidence/v031-browser-cases.json).
+
+The compiled desktop and mobile captures use the `v031-` prefix. The desktop/mobile
+views were visually inspected, alongside the live in-app page; keyboard, axe checks
+and 200% text reflow pass. Existing demo data was preserved. The API and retention
+contract have not changed. This focused refinement does not rerun or close the v0.3.0
+image-comparison gate described below. No fresh clone or other browser-engine run is
+claimed for this milestone. Resolve the immutable tag with `git rev-list -n 1 v0.3.1`
+and match its revision to the public main-branch CI run.
+
 ## Scenario workspace C — v0.3.0
 
 The approved C interface replaces the two top-level tabs with one page per scenario.

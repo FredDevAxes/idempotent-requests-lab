@@ -9,7 +9,7 @@ This is a **local, limited prototype** using fictional maintenance requests. It
 explores a bounded database guarantee, not universal exactly-once delivery. There
 are no payments, emails, external effects or production deployment.
 
-![Scenario workspace with one next action and a collapsed technical panel](docs/evidence/workspace-c-collapsed.png)
+![Scenario workspace with one next action and a collapsed technical panel](docs/evidence/v031-collapsed.png)
 
 The guided view walks through six experiments, one action at a time. It separates
 what the client knows from what the server actually saved. Each scenario has one page,
@@ -84,7 +84,7 @@ response-loss experiment:
 1. The page starts with **Send twice**. Click **Send the request**.
    Compare the confirmation on the client with the one saved job on the server.
 2. Click **Send the same request again**. The result reads **2 sends, 1 saved request**.
-3. Click **Next experiment** to explore **Lost reply**, then **Send with a lost reply**.
+3. Select **Lost reply** in the scenario navigation, then click **Send with a lost reply**.
    The client has no confirmation, while the server observation shows the saved job.
 4. Reload if you want to test persistence. This same experiment and its reference return.
 5. Click **Retry same request**. The API returns the existing record.

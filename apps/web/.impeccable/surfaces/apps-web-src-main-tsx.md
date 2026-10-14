@@ -53,3 +53,11 @@ No fake backend logs, no invented outcomes, no destructive resets on navigation.
 One active intention is retained across refresh and scenario browsing. Starting another
 scenario explicitly replaces that intention while retaining previous database rows.
 The main action stays above the panel in normal flow. No fixed overlay or fake resize grip.
+
+## Refinement accepted 15 October 2026
+
+The user requested manual scenario changes through the navigation only, an in-place
+restart action after completion, the introduction below each scenario title, removal
+of the top-right mode label, and clearer screen/server exchange animations. Preserve
+the C visual world and collapsed technical panel. Motion illustrates actual sends and
+observed replies without claiming measured network timing; reduced motion is static.

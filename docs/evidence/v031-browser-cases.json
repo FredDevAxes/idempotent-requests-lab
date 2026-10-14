@@ -1,0 +1,322 @@
+[
+  {
+    "title": "normal send, exact retry and a distinct intention",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 1205
+      }
+    ]
+  },
+  {
+    "title": "real response loss, reload with preserved key/content and recovery",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 699
+      }
+    ]
+  },
+  {
+    "title": "content conflict is visible without a duplicate",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 424
+      }
+    ]
+  },
+  {
+    "title": "pre-commit failure and recovery leave no partial writes",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 406
+      }
+    ]
+  },
+  {
+    "title": "twenty actual browser sends create one record",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 401
+      }
+    ]
+  },
+  {
+    "title": "mobile and keyboard path, reduced motion, contrast and 200% reflow",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 1165
+      }
+    ]
+  },
+  {
+    "title": "explicit reset confirmation and purge controls",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 889
+      }
+    ]
+  },
+  {
+    "title": "storage failure prevents sending an unpreserved intention",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 293
+      }
+    ]
+  },
+  {
+    "title": "reload during an in-flight commit preserves the intent and recovers",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 614
+      }
+    ]
+  },
+  {
+    "title": "first-time view explains the next action and keeps identifiers in the technical panel",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 295
+      }
+    ]
+  },
+  {
+    "title": "guided sequential replay explains two sends and one actual saved request",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 408
+      }
+    ]
+  },
+  {
+    "title": "guided lost response, panel toggle and reload preserve the same reference and recover",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 576
+      }
+    ]
+  },
+  {
+    "title": "guided concurrency uses twenty real sends and one saved record",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 369
+      }
+    ]
+  },
+  {
+    "title": "guided rollback shows no saved record then a successful retry",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 366
+      }
+    ]
+  },
+  {
+    "title": "guided content conflict preserves the original priority",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 767
+      }
+    ]
+  },
+  {
+    "title": "guided new intention uses two keys and creates two genuine requests",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 395
+      }
+    ]
+  },
+  {
+    "title": "guided results exclude earlier experiments without deleting them",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 436
+      }
+    ]
+  },
+  {
+    "title": "server read failure never presents a fabricated zero or success conclusion",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 337
+      }
+    ]
+  },
+  {
+    "title": "existing v0.1 browser intent remains intact until a new experiment is explicitly started",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 318
+      }
+    ]
+  },
+  {
+    "title": "guided keyboard, accessible disclosure, mobile and 200 percent reflow",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 1002
+      }
+    ]
+  },
+  {
+    "title": "in-app browser width keeps the guided action and observations readable",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 198
+      }
+    ]
+  },
+  {
+    "title": "scenario navigation scopes the drawer and preserves the unfinished request",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 546
+      }
+    ]
+  },
+  {
+    "title": "version C expanded panel keeps the scenario action visible and copies the real key",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 879
+      }
+    ]
+  },
+  {
+    "title": "lost-reply summary distinguishes the plan from observed and unavailable evidence",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 537
+      }
+    ]
+  },
+  {
+    "title": "repeat: completion and restart stay in the selected scenario and keep server records",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 886
+      }
+    ]
+  },
+  {
+    "title": "lost: completion and restart stay in the selected scenario and keep server records",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 465
+      }
+    ]
+  },
+  {
+    "title": "parallel: completion and restart stay in the selected scenario and keep server records",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 455
+      }
+    ]
+  },
+  {
+    "title": "rollback: completion and restart stay in the selected scenario and keep server records",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 487
+      }
+    ]
+  },
+  {
+    "title": "conflict: completion and restart stay in the selected scenario and keep server records",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 470
+      }
+    ]
+  },
+  {
+    "title": "new: completion and restart stay in the selected scenario and keep server records",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 573
+      }
+    ]
+  },
+  {
+    "title": "exchange motion waits for an actual reply, ends, and does not replay on navigation or technical controls",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 2185
+      }
+    ]
+  },
+  {
+    "title": "reply animation and client confirmation do not wait for independent server evidence",
+    "ok": true,
+    "results": [
+      {
+        "status": "passed",
+        "duration": 321
+      }
+    ]
+  }
+]

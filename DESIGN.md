@@ -198,11 +198,11 @@ Tabular numerals are applied to numbered scenario markers, result counts and tim
 
 ## Layout
 
-The implemented shell fills at least 100svh. A left rail uses `clamp(224px, 18vw, 275px)` beside a flexible workspace. There is no centered maximum-width page container. The workspace has a thin status header, scenario content and a bottom technical disclosure in normal flow.
+The implemented shell fills at least 100svh. A left rail uses `clamp(224px, 18vw, 275px)` beside a flexible workspace. There is no centered maximum-width page container. The workspace has a thin scenario-position header, scenario content and a bottom technical disclosure in normal flow.
 
-Desktop content gutters are 2.5rem. The request/reply diagram uses three columns: `minmax(140px, 1fr) minmax(180px, 2.5fr) minmax(140px, 1fr)`, with a minimum height of 270px. Two observed counters sit below it. The action row places explanation on the left and the primary action on the right. The scenario area grows to occupy available space while the technical panel is collapsed.
+Desktop content gutters are 2.5rem. The request/reply diagram uses three columns: `minmax(140px, 1fr) minmax(180px, 2.5fr) minmax(140px, 1fr)`, with a minimum height of 270px. Two observed counters sit below it. The introduction stays beneath the title. The action row places the observed outcome on the left and the primary action on the right. The scenario area grows to occupy available space while the technical panel is collapsed.
 
-At widths up to 1100px, technical and advanced content stack, the diagram narrows its column minimums, and the primary action moves above explanation at full width. Above 1100px, technical evidence occupies the left column and request tools the right, with a 1.75rem gap; collapsed Advanced tools sits under the tools, expanding across both columns when opened. At 1100px and above, opening the technical panel stops scenario-content growth.
+At widths up to 1100px, technical and advanced content stack, the diagram narrows its column minimums, and the primary action sits below the observed outcome at full width. Above 1100px, technical evidence occupies the left column and request tools the right, with a 1.75rem gap; collapsed Advanced tools sits under the tools, expanding across both columns when opened. At 1100px and above, opening the technical panel stops scenario-content growth.
 
 At widths up to 860px, the rail becomes a top band and a labeled native selector replaces the numbered navigation. The brand remains spaced on one line. Gutters become 1.25rem; endpoint icons shrink from 84px to 62px, the diagram minimum height becomes 230px, and its horizontal exchange is preserved. The technical disclosure hides only its Expand/Collapse word while retaining the chevron and accessible expanded state. At widths up to 480px, identifier rows and saved-record definitions stack; diagram columns can shrink to zero minimum, and state pills wrap.
 
@@ -210,7 +210,7 @@ Spacing follows the observed practical increments in the frontmatter. These layo
 
 ## Elevation & Depth
 
-There are no box shadows. Thin boundaries and pale washes separate regions. Keyboard focus uses a 3px cobalt outline with 4px offset. The in-flight outbound arrow has a 1.2s ease-out repeating animation; its midpoint changes the border and applies `drop-shadow(0 2px 3px #ccd4e3)`. Reduced-motion preference removes animation and restores automatic scrolling. Controls have immediate hover changes, with no transition token.
+Thin boundaries and pale washes separate regions. Keyboard focus uses a 3px cobalt outline with 4px offset. Actual sends trigger a finite 700ms outbound packet animation. A matching return animation starts only after the POST outcome is known, delayed enough to follow the outbound illustration. An unknown reply stops halfway. Parallel sends use three staggered dots to represent the batch, while counters show actual attempts. Packets use a 3px white outline shadow for contrast, with no surface elevation. Only transform and opacity animate; nothing loops. Reduced-motion preference hides decorative packets and preserves static state feedback. Reloading and navigation do not replay past events; technical controls do not animate the exchange. Controls have immediate hover changes, with no transition token.
 
 **The Flat Evidence Rule.** Use borders and quiet surface changes to separate observations. The in-flight arrow glow is a temporary activity cue, not surface elevation.
 
@@ -232,7 +232,7 @@ Full-width white fields with a one-pixel boundary and minimum height 44px. Label
 
 ### Navigation
 
-Six numbered scenario buttons use `aria-current="step"` for the selected item, a pale blue wash and a filled cobalt circle. Navigation changes the URL fragment and closes the technical panel. It does not reset persisted records. Native selection replaces the rail on narrow screens. A focus-visible skip link moves to the next guided action.
+Six numbered scenario buttons use `aria-current="step"` for the selected item, a pale blue wash and a filled cobalt circle. Navigation is the only way to change scenarios. It changes the URL fragment and closes the technical panel. The completed main action restarts only the current scenario. It does not reset persisted records. Native selection replaces the rail on narrow screens. A focus-visible skip link moves to the next guided action.
 
 ### Evidence Records and State Labels
 
@@ -244,7 +244,7 @@ Two labeled endpoint SVGs face each other across a solid outgoing line and dashe
 
 ### Disclosures
 
-The bottom Technical details button is collapsed on initial render, exposes `aria-expanded` and `aria-controls`, and hides its panel with the `hidden` attribute. The action remains above it. Its attempt badge is scoped to the displayed scenario. Expanded evidence groups HTTP activity, observed records, identifiers and request tools. Explanation, request content and Advanced tools use native details/summary elements and begin closed. Advanced manual controls describe their effect on the current request; they are separate from the guided next action. Chevron rotation signals expanded state where an SVG chevron is present.
+The bottom Technical details button is collapsed on initial render, exposes `aria-expanded` and `aria-controls`, and hides its panel with the `hidden` attribute. The action remains above it. Its attempt badge is scoped to the displayed scenario. Expanded evidence groups HTTP activity, observed records, identifiers and request tools. The short scenario introduction is always visible below its title. Request content and Advanced tools use native details/summary elements and begin closed. Advanced manual controls describe their effect on the current request; they are separate from the guided next action. Chevron rotation signals expanded state where an SVG chevron is present.
 
 ## Do's and Don'ts
 

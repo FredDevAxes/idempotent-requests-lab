@@ -14,11 +14,22 @@ import {
   type GuideState,
   type LessonId,
 } from "./session";
+export type Exchange = {
+  id: number;
+  key: string;
+  startedAt: number;
+  settledAt?: number;
+  count: number;
+  outcome?: Attempt["outcome"];
+};
 export function useLab() {
   const [session, setSession] = useState(loadSession);
   const current = useRef(session);
   const [busy, setBusy] = useState(false);
+  const [sending, setSending] = useState(false);
   const executing = useRef(false);
+  const exchangeId = useRef(0);
+  const [exchange, setExchange] = useState<Exchange>();
   const [demo, setDemo] = useState<boolean | null>(null);
   const [requests, setRequests] = useState<Intervention[]>([]);
   const [notice, setNotice] = useState(
@@ -111,6 +122,14 @@ export function useLab() {
     }
     executing.current = true;
     setBusy(true);
+    const flight: Exchange = {
+      id: ++exchangeId.current,
+      key: active.key,
+      startedAt: performance.now(),
+      count: demo && scenario === "parallel" ? 20 : 1,
+    };
+    setExchange(flight);
+    setSending(true);
     setNotice(
       "Sending. A missing reply does not tell us whether the request was saved.",
     );
@@ -197,6 +216,14 @@ export function useLab() {
           (_, index) => attempt(first + index),
         ),
       );
+      // Animate only observed POST outcomes, independently of GET evidence.
+      setExchange({
+        ...flight,
+        settledAt: performance.now(),
+        outcome:
+          outcomes.find((outcome) => outcome !== "accepted") ?? "accepted",
+      });
+      setSending(false);
       const observed = await refresh();
       if (current.current.guide && phase) {
         const expected =
@@ -238,6 +265,7 @@ export function useLab() {
     } finally {
       executing.current = false;
       setBusy(false);
+      setSending(false);
     }
   }
   async function runGuide(lesson: LessonId) {
@@ -352,6 +380,8 @@ export function useLab() {
   }
   return {
     session,
+    exchange,
+    sending,
     busy,
     demo,
     requests,

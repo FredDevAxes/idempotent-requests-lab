@@ -8,7 +8,8 @@ Each send reaches the API; the saved-request list comes from PostgreSQL.
 ## Present the guided demonstration
 
 Follow the numbered scenarios in order, or select one directly. Each page offers
-one next action. **Show explanation** reveals the teaching notes. No manual fault configuration is required.
+one next action, with a short introduction directly beneath its title. Change scenarios
+only in the navigation; the main button never advances to another scenario. No manual fault configuration is required.
 The observer stage compares the client's confirmation with actual server records.
 
 | Experiment         | First action              | Next action                 | Verified outcome                                       |
@@ -26,7 +27,7 @@ visible under **Technical details → Advanced tools → All saved requests**. C
 activity. If the server cannot be read, the interface says so rather than displaying
 zero or claiming success. Refresh the server evidence or inspect it before continuing.
 
-![A lost confirmation beside a real saved request, with one safe retry action](evidence/workspace-c-expanded.png)
+![A lost confirmation beside a real saved request, with one safe retry action](evidence/v031-expanded.png)
 
 Actual compiled-browser capture after the API socket was destroyed following commit.
 
@@ -42,13 +43,24 @@ A missing POST reply does not confirm an identifier: the separate GET evidence c
 still show the saved record. Copy buttons copy full identifiers.
 
 The panel closes when switching scenarios. If the selected scenario has not started,
-it offers to resume the preserved request rather than showing its evidence under
-the wrong scenario. Only one intention is active: starting another scenario replaces
+it names the preserved request and points back to the scenario navigation rather than
+showing its evidence under the wrong scenario. Only one intention is active: starting another scenario replaces
 it while preserving earlier database rows. URL fragments identify the selected scenario.
 
-Under **Show explanation**, **Repeat this experiment** starts an explicit new run
-without deleting rows.
+After completion, **Restart scenario** prepares a new run of the same scenario,
+without sending anything or deleting rows. The selection also survives a reload.
 An existing v0.1 browser session stays intact until a new experiment is started.
+
+## Exchange animation
+
+Each real send triggers a short outbound packet animation. The return path appears only
+once the POST outcome is known: green for a confirmation, red for refusal or a retryable
+failure, and purple stopping halfway for an unknown reply. Three staggered outbound dots
+represent the batch of twenty concurrent attempts; the counter reports the real total.
+These are explanatory illustrations, not measured network timing or packet tracing.
+They do not establish that the server saved a request; that evidence comes from the separate GET.
+Animations end without looping, do not replay on reload or scenario navigation, and do not
+run for technical controls. Reduced-motion users retain the same static labels and counters.
 
 ## Technical controls
 
@@ -84,11 +96,11 @@ pnpm build
 CAPTURE_DOCS=true pnpm test:browser
 ```
 
-![Mobile guided result and client/server observations stack without horizontal overflow](evidence/workspace-c-mobile.png)
+![Mobile guided result and client/server observations stack without horizontal overflow](evidence/v031-mobile.png)
 
 Mobile capture of the expanded technical panel after a real lost response. The scan includes labels, contrast and landmarks.
 
-![Enlarged guided text and observations remain usable in the narrow reflow check](evidence/workspace-c-zoom.png)
+![Enlarged guided text and observations remain usable in the narrow reflow check](evidence/v031-zoom.png)
 
 200% text/reflow check. This is an automated layout surrogate; native browser zoom
 and assistive-technology combinations can behave differently.

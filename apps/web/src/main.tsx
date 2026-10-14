@@ -99,19 +99,11 @@ function App() {
         >
           <header className="workspace-header">
             <span>Scenario {String(index + 1).padStart(2, "0")} / 06</span>
-            <span className={`connection ${lab.demo ? "connected" : ""}`}>
-              {lab.demo === null
-                ? "Connecting…"
-                : lab.demo
-                  ? "Local demo"
-                  : "Standard mode"}
-            </span>
           </header>
           <GuidedDemo
             key={lesson}
             lab={lab}
             lessonId={lesson}
-            setLesson={choose}
             inspect={() => setTechnicalOpen(true)}
           />
           <section className="technical-drawer" aria-label="Technical details">
@@ -135,12 +127,7 @@ function App() {
               </span>
             </button>
             <div id="technical-panel" hidden={!technicalOpen}>
-              <TechnicalControls
-                key={lesson}
-                lab={lab}
-                lessonId={lesson}
-                resume={() => choose(lab.session.guide?.lesson ?? "repeat")}
-              />
+              <TechnicalControls key={lesson} lab={lab} lessonId={lesson} />
             </div>
           </section>
         </main>

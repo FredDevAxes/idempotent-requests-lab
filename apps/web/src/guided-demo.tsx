@@ -1,17 +1,16 @@
 import { useEffect, useRef } from "react";
-import { lessons, lessonFor } from "./lessons";
+import { lessonFor } from "./lessons";
 import { Icon } from "./icons";
+import { ExchangeMotion } from "./exchange-motion";
 import type { Lab } from "./use-lab";
 import type { LessonId } from "./session";
 export function GuidedDemo({
   lab,
   lessonId,
-  setLesson,
   inspect,
 }: {
   lab: Lab;
   lessonId: LessonId;
-  setLesson: (id: LessonId) => void;
   inspect: () => void;
 }) {
   const lesson = lessonFor(lessonId);
@@ -58,7 +57,7 @@ export function GuidedDemo({
     records.length === expectedCount &&
     Boolean(verifiedLesson);
   const outcome = latest?.outcome;
-  const clientTitle = lab.busy
+  const clientTitle = lab.sending
     ? "Waiting for a reply"
     : !active
       ? "Ready to send"
@@ -71,7 +70,7 @@ export function GuidedDemo({
             : outcome === "accepted"
               ? "Confirmation received"
               : "No result confirmed";
-  const clientDetail = lab.busy
+  const clientDetail = lab.sending
     ? "The request is in flight. Its final outcome is not known yet."
     : !active
       ? "This is what a person using the app knows."
@@ -84,67 +83,40 @@ export function GuidedDemo({
             : outcome === "accepted"
               ? "The server returned the saved request."
               : "Keep the request reference to resolve its outcome.";
-  const sceneText =
-    phase === "ready"
-      ? lesson.setup
-      : phase === "retry"
-        ? lessonId === "lost"
-          ? "The reply is missing. Check what the server saved, then retry the same request to resolve its outcome."
-          : lessonId === "rollback"
-            ? "Try again without the injected failure, keeping the same reference. Compare the refreshed server records before and after."
-            : lessonId === "conflict"
-              ? "The routine inspection is saved. Now change the priority, while keeping the same request reference."
-              : lessonId === "new"
-                ? "The first job is saved. Create a second job with a new reference, even though the content is identical."
-                : "Your request is saved. Send it again with the same reference and compare the result."
-        : resultMatches
-          ? lessonId === "new"
-            ? "Two different references created two separate jobs. The server cannot infer whether identical content means the same intention."
-            : lessonId === "conflict"
-              ? "A reference belongs to one request. Different content was refused, so the saved job was not silently changed."
-              : lessonId === "parallel"
-                ? "Twenty real attempts reached the API. The database accepted one request and replayed its result to the others."
-                : lessonId === "rollback"
-                  ? "The failed transaction left no partial request. A retry with the same reference could then create the job."
-                  : lessonId === "lost"
-                    ? "The missing reply did not mean failure. Retrying recovered the already-saved request instead of creating another."
-                    : "Sending again returned the same saved request. This is idempotency: repeating one operation preserves its result."
-          : "The observations differ from this exercise’s expected result. Refresh the server or inspect the evidence before continuing.";
-  const nextIndex = lessons.findIndex((item) => item.id === lessonId) + 1;
-  function choose(id: LessonId) {
-    if (lab.busy) return;
-    setLesson(id);
-  }
-  const shortStory = lab.busy
+  const shortStory = lab.sending
     ? "Sending the request. Waiting for the outcome."
-    : unavailable && active
-      ? "Server evidence is unavailable. Refresh to check the result."
-      : phase === "done" && resultMatches
-        ? lessonId === "new"
-          ? "A new reference creates a separate request."
-          : lessonId === "conflict"
-            ? "Changed content was refused. The original request is unchanged."
-            : lessonId === "lost"
-              ? "The retry recovered the saved request."
-              : "Sending again kept one saved request."
-        : lessonId === "lost"
-          ? !latest
-            ? "Send a request, then lose its reply after saving."
-            : outcome === "unknown" && records.length === 1
-              ? "The request is saved. The reply never arrived."
-              : outcome === "unknown"
-                ? "No reply arrived. No saved request was observed."
-                : "The response differs from this scenario. Inspect the evidence."
-          : lessonId === "parallel"
-            ? "Send the same request twenty times, together."
-            : lessonId === "rollback"
-              ? "Fail before saving, then try again."
-              : lessonId === "conflict"
-                ? "Keep the reference. Change the content."
-                : lessonId === "new"
-                  ? "Same content. A new request reference."
-                  : "Send a pump inspection request. Then send it again.";
-  const replyLabel = lab.busy
+    : lab.busy && active
+      ? "Checking server records."
+      : unavailable && active
+        ? "Server evidence is unavailable. Refresh to check the result."
+        : phase === "done" && resultMatches
+          ? lessonId === "new"
+            ? "A new reference creates a separate request."
+            : lessonId === "conflict"
+              ? "Changed content was refused. The original request is unchanged."
+              : lessonId === "lost"
+                ? "The retry recovered the saved request."
+                : lessonId === "parallel"
+                  ? "Twenty sends created one saved request."
+                  : "Sending again kept one saved request."
+          : lessonId === "lost"
+            ? !latest
+              ? "Send a request, then lose its reply after saving."
+              : outcome === "unknown" && records.length === 1
+                ? "The request is saved. The reply never arrived."
+                : outcome === "unknown"
+                  ? "No reply arrived. No saved request was observed."
+                  : "The response differs from this scenario. Inspect the evidence."
+            : lessonId === "parallel"
+              ? "Send the same request twenty times, together."
+              : lessonId === "rollback"
+                ? "Fail before saving, then try again."
+                : lessonId === "conflict"
+                  ? "Keep the reference. Change the content."
+                  : lessonId === "new"
+                    ? "Same content. A new request reference."
+                    : "Send a pump inspection request. Then send it again.";
+  const replyLabel = lab.sending
     ? "Waiting for reply…"
     : outcome === "unknown"
       ? "Reply lost"
@@ -159,12 +131,12 @@ export function GuidedDemo({
     <section className="scenario-page" aria-labelledby="scene-title">
       <div className="scene-heading">
         <h1 id="scene-title">{lesson.label}</h1>
-        <p className="stage-footer">{shortStory}</p>
+        <p className="scenario-intro">{lesson.setup}</p>
       </div>
       <div className="observation-stage" aria-label="Live observations">
         <div
           className="request-flow"
-          data-outcome={lab.busy ? "sending" : (outcome ?? "ready")}
+          data-outcome={lab.sending ? "sending" : (outcome ?? "ready")}
         >
           <section
             className="endpoint client"
@@ -173,8 +145,10 @@ export function GuidedDemo({
           >
             <h2>Your screen</h2>
             <Icon name="screen" className="endpoint-icon" />
-            <span className={`state-label ${outcome ?? "ready"}`}>
-              {lab.busy
+            <span
+              className={`state-label ${lab.sending ? "ready" : (outcome ?? "ready")}`}
+            >
+              {lab.sending
                 ? "Waiting…"
                 : !active
                   ? "Ready"
@@ -191,9 +165,16 @@ export function GuidedDemo({
             </span>
           </section>
           <div className="flow-arrows" aria-label="Request and reply">
+            <ExchangeMotion
+              exchange={
+                active && lab.exchange?.key === lab.session.key
+                  ? lab.exchange
+                  : undefined
+              }
+            />
             <div className="outbound">
               <span>
-                {lab.busy ? "Sending…" : latest ? "Request sent" : "Request"}
+                {lab.sending ? "Sending…" : latest ? "Request sent" : "Request"}
               </span>
             </div>
             <div className={`inbound ${outcome === "unknown" ? "broken" : ""}`}>
@@ -275,26 +256,9 @@ export function GuidedDemo({
         )}
       </div>
       <div className="scenario-actions">
-        <details className="explanation">
-          <summary>
-            <Icon name="chevron" />
-            Show explanation
-          </summary>
-          <div>
-            <h2>{lesson.title}</h2>
-            <p>{sceneText}</p>
-            <p>
-              Same request means the same reference and content. References are
-              retained for at least 24 hours, until an explicit purge.
-            </p>
-            {phase === "done" && (
-              <button disabled={lab.busy} onClick={lab.restartGuide}>
-                <Icon name="retry" />
-                Repeat this experiment
-              </button>
-            )}
-          </div>
-        </details>
+        <p className="stage-footer" aria-live="polite">
+          {shortStory}
+        </p>
         <div className="primary-action">
           {phase !== "done" ? (
             <button
@@ -303,11 +267,13 @@ export function GuidedDemo({
               disabled={cannotRun}
               onClick={() => void lab.runGuide(lessonId)}
             >
-              {lab.busy
+              {lab.sending
                 ? "Sending…"
-                : phase === "retry"
-                  ? lesson.retryAction
-                  : lesson.firstAction}
+                : lab.busy
+                  ? "Checking records…"
+                  : phase === "retry"
+                    ? lesson.retryAction
+                    : lesson.firstAction}
               <Icon name="arrow" />
             </button>
           ) : !resultMatches ? (
@@ -320,27 +286,14 @@ export function GuidedDemo({
               Refresh server results
               <Icon name="retry" />
             </button>
-          ) : nextIndex < lessons.length ? (
-            <button
-              id="guide-action"
-              className="primary"
-              disabled={lab.busy}
-              onClick={() => choose(lessons[nextIndex].id)}
-            >
-              Next experiment
-              <Icon name="arrow" />
-            </button>
           ) : (
             <button
               id="guide-action"
               className="primary"
               disabled={lab.busy}
-              onClick={() => {
-                choose("repeat");
-                lab.restartGuide();
-              }}
+              onClick={lab.restartGuide}
             >
-              Start a fresh walkthrough
+              Restart scenario
               <Icon name="retry" />
             </button>
           )}
@@ -365,7 +318,7 @@ export function GuidedDemo({
           {lab.notice.includes("storage") ||
           lab.notice.includes("API unavailable")
             ? lab.notice
-            : lab.busy
+            : lab.sending
               ? "Sending real requests to the API."
               : `${clientTitle}. ${unavailable ? "Server evidence unavailable." : "Server records refreshed."}`}
         </p>
