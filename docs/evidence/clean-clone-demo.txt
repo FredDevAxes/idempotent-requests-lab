@@ -1,0 +1,11 @@
+
+> idempotent-requests-lab@0.1.0 demo:cli <clean-clone>
+> node scripts/demo.mjs
+
+{
+  "key": "<generated UUID omitted>",
+  "requestId": "550a2ad7-b9de-4169-800e-d007fc3626a6",
+  "lostResponse": true,
+  "persistedBeforeRetry": true,
+  "replayStatus": 201
+}
